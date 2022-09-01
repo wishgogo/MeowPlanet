@@ -1,0 +1,348 @@
+﻿@model SitterViewModels;
+@using System.Security.Claims;
+@using MeowPlanet.ViewModels.Sitters;
+@{
+    bool isLogin = Int32.TryParse(User.Claims.Where(x => x.Type == ClaimTypes.Sid).Select(x => x.Value).FirstOrDefault(), out int memberId);
+}
+@{
+    ViewData["Title"] = "保姆詳細";
+}
+@section Styles{
+    <link  href="~/css/sitter-detail.css" rel="stylesheet"/>
+}
+
+<style>
+#carousel {
+    position: relative;
+    height: 400px;
+    top: 50%;
+    overflow: hidden;
+}
+#carousel div {
+  position: absolute;
+  transition: transform 1s, left 1s, opacity 1s, z-index 0s;
+  opacity: 1;
+}
+#carousel div img {
+  width: 400px;
+  transition: width 1s;
+}
+#carousel div.hideLeft {
+  left: 0%;
+  opacity: 0;
+  transform: translateY(50%) translateX(-50%);
+}
+#carousel div.hideLeft img {
+  width: 200px;
+}
+#carousel div.hideRight {
+  left: 100%;
+  opacity: 0;
+  transform: translateY(50%) translateX(-50%);
+}
+#carousel div.hideRight img {
+  width: 200px;
+}
+#carousel div.prev {
+  z-index: 5;
+  left: 30%;
+  transform: translateY(50px) translateX(-50%);
+}
+#carousel div.prev img {
+  width: 300px;
+}
+#carousel div.prevLeftSecond {
+  z-index: 4;
+  left: 15%;
+  transform: translateY(50%) translateX(-50%);
+  opacity: 0.7;
+}
+#carousel div.prevLeftSecond img {
+  width: 200px;
+}
+#carousel div.selected {
+  z-index: 10;
+  left: 50%;
+  transform: translateY(0px) translateX(-50%);
+}
+#carousel div.next {
+  z-index: 5;
+  left: 70%;
+  transform: translateY(50px) translateX(-50%);
+}
+#carousel div.next img {
+  width: 300px;
+}
+#carousel div.nextRightSecond {
+  z-index: 4;
+  left: 85%;
+  transform: translateY(50%) translateX(-50%);
+  opacity: 0.7;
+}
+#carousel div.nextRightSecond img {
+  width: 200px;
+}
+
+.buttons {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 10px;
+}
+</style>
+<div class="starsky">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
+    <div class="container">
+
+        @*輪播牆*@
+        <slider>
+            <div class="row">
+                <div id="carousel">
+                    @*這邊的照片比例一定要 1:1*@
+                    <div class="prevLeftSecond">
+                        <img src="@Model.sitter.Img04">
+                    </div>
+
+                    <div class="prev">
+                        <img src="@Model.sitter.Img02">
+                    </div>
+
+                    <div class="selected">
+                        <img src="@Model.sitter.Img01">
+                    </div>
+
+                    <div class="next">
+                        <img src="@Model.sitter.Img03">
+                    </div>
+                    <div class="nextRightSecond">
+                        <img src="@Model.sitter.Img05">
+                    </div>
+                </div>
+
+                @*<div class="buttons">
+                  <button id="prev">Prev</button>
+                  <button id="next">Next</button>
+                </div>*@
+            </div>
+        </slider>
+
+        <content>
+            <div class="row justify-content-between pt-4 pb-4">
+                <div class="col-7 p-0" id="sitter-detail">
+                    <div>
+                        <div>
+                            <div class="title">
+                                <span class="h1">服務名稱：</span>
+                                <h1>@Html.DisplayFor(model => model.sitter.Name)</h1>
+                                </div>
+                            <h3>服務介紹</h3>
+                        </div>
+                        <img class="sitter-photo" src="@Model.memberPhoto"/>
+                        <div class="black-overlay" data-sid="@Model.sitter.MemberId">
+                            <i class="fa-solid fa-comment-dots"></i>
+                        </div>
+                    </div>
+                    <hr>
+                    <h5>自介</h5>
+                    <p class="buzz-primary p-4" style="display:inline-block;">@Html.DisplayFor(model => model.sitter.Summary)</p>
+                    <h5>保姆有無相關證照</h5>
+                    <p class="buzz-primary p-4" style="display:inline-block;"><i class="fa-solid fa-id-card"></i> @Html.DisplayFor(model => model.sitter.Licence)</p>
+                    <h5>貓咪晚上是否關籠</h5>
+                    <p class="buzz-primary p-4" style="display:inline-block;"><i class="fa-solid fa-house"></i> @Html.DisplayFor(model => model.sitter.Cage)</p>
+                    <h5>是否提供即時監控設備</h5>
+                    <p class="buzz-primary p-4" style="display:inline-block;"><i class="fa-solid fa-desktop"></i> @Html.DisplayFor(model => model.sitter.Monitor)</p>
+                    <h5>保姆提供的室內設施</h5>
+                    @if(Model.sitterfeatureList.Count>0)
+                    {
+                        for(int i = 0 ; i< Model.sitterfeatureList.Count; i++)
+                        {
+                            <p class="buzz-primary p-4 me-3" style="display:inline-block;">
+                                <i class="fa-solid fa-cat"></i> @Html.DisplayFor(model => model.sitterfeatureList[i])
+                            </p>
+                        }
+                    }
+                    else
+                    {
+                        <p class="buzz-primary p-4 me-3" style="display:inline-block;">
+                            <i class="fa-solid fa-circle-question"></i> 無設備
+                        </p>
+                    }
+                    
+                </div>
+                <div class="sticky order-col  buzz col-4 p-4">
+                    <div class="pay-star">
+                        <div class="">
+                            <span class="pay-money">$ @Html.DisplayFor(model => model.sitter.Pay) TWD</span>
+                            <span>&nbsp;/晚</span>
+                        </div>
+                        <div class="star">
+                            <i class="fa-solid fa-star"></i>
+                            <span class="star-txt">@Model.sitter.AvgStar</span>
+                            <span class="comment-num">@Html.DisplayFor(model => model.OrderCommentList.Count) 則評價</span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="reserve-panel">
+                        <div class="reserve-btn">
+                            <div class="calender-rec buzz" style="display: none;">
+                                <div class="calender-header">
+                                    <div class="night h3">選擇日期</div>
+                                    <div>
+                                        <span></span>-<span></span>
+                                    </div>
+                                    <form id="confirmForm" method="post" asp-controller="Sitter" asp-action="ComfirmPay">
+                                        <input name="startDate" type="hidden"/>
+                                        <input name="endDate" type="hidden"/>
+                                        <input name="night" type="hidden"/>
+                                        <input name="catId" type="hidden"/>
+                                        <input name="serviceId" type="hidden"/>
+                                    </form>
+                                </div>
+                                <div class="calendar"></div>
+                                <div>
+                                    <span class="clear-select">
+                                        <button>清除日期</button>
+                                    </span>
+                                    <span class="close-calendar">
+                                        <button>關閉</button>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="date-rec">
+                                <div class="date-inout">
+                                    <div class="inout">入住</div>
+                                    <div class="date" id="check-in">選取日期</div>
+                                </div>
+                                <div class="date-inout">
+                                    <div class="inout">退房</div>
+                                    <div class="date" id="check-out">選取日期</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="reserve-number-btn">
+                            <div class="pet-rec" style="display: none;">
+                                @for (int i = 0; i < @ViewBag.catList.Count; i++)
+                                {
+                                <div class="cat-card" data-index=@i>
+                                    <img src="@ViewBag.catList[i].Img01"/>
+                                    <span>@ViewBag.catList[i].Name</span>
+                                </div>
+                                }
+                            </div>
+                            <div class="number-txt">哪一隻寵物</div>
+                            <div class="number">
+                                請選擇一隻寵物...
+                            </div>
+                            <i class="icon fa-solid fa-angle-down"></i>
+                        </button>
+                        
+                    </div>
+                    <a id="comfirmPay">
+                        <div class="btn btn-order">預定</div>
+                    </a>
+                </div>
+            </div>
+        </content>
+
+        <hr>
+        <comment>
+            <div class="row d-block pt-4 pb-4">
+                <div class="star">
+                    <i class="fa-solid fa-star h3"></i>
+                    <span class="star-txt h4">@Model.sitter.AvgStar</span>
+                    <span class="h4">&nbsp;@Html.DisplayFor(model => model.OrderCommentList.Count)則評價</span>
+                </div>
+                <div class="comment-area">
+                    @for (int i = 0; i < Model.OrderCommentList.Count; i++)
+                    {
+                    <div class="one-comment">
+                        <div class="user-info">
+                            <div class="d-flex">
+                                <img class="user-pic" src="@Model.CommentOfUserList[i].Photo">
+                                <div class="user-detail">
+                                    <div class="user-name">@Model.CommentOfUserList[i].Name</div>
+                                    <div class="comment-time">@Model.OrderCommentList[i].DateOver.ToString("yyyy年MM月")</div>
+                                </div>
+                            </div>
+                            <div class="user-comment">
+                                @Html.DisplayFor(model => model.OrderCommentList[i].Comment)
+                            </div>
+                        </div>
+                    </div>
+                    if(i == 5){ break; }
+                    }
+                </div>
+                <button class="more-comment buzz">
+                    顯示全部評價
+                </button>
+            </div>
+        </comment>
+        <hr>
+
+        <location>
+            <div class="row pt-5 pb-5">
+                <div class="h3">保姆位置</div>
+
+                <div class="map" id="map">
+
+                </div>
+            </div>
+        </location>
+        <hr>
+    </div>
+</div>
+
+    @section Scripts{
+     <script>
+         var viewBag_catList = @Html.Raw(Json.Serialize(ViewBag.catList));
+         var model = @Html.Raw(Json.Serialize(Model));
+         var isLogin = '@isLogin';
+         var memberId = '@memberId';
+         $('.nav-item a').eq(0).addClass('nav-item-active');
+     </script>
+    <script src="~/js/sitter-detail.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5GLU-Md1jCttuMgYGiLngvDh0nELvLjM&callback=initMap&libraries=places,geometry&v=weekly"></script>
+    <script>
+        //sweetalert 更多評論
+        $(".more-comment, .comment-num").click(function () {
+            Swal.fire(
+            {
+                title: '',
+                width: 1000,
+                padding: '2em',
+                color: '#fff',
+                background: "#171B20",
+                showConfirmButton: false,
+                showCloseButton: true,
+                backdrop: `rgba(0,0,0,0.4)`,
+                html: `<div class="pop-star h2">
+                            <i class="fa-solid fa-star"></i>
+                            <span class="star-txt">@Model.sitter.AvgStar</span>
+                            <span class="">@Html.DisplayFor(model => model.OrderCommentList.Count)則評價</span>
+                        </div>
+                            <div class="pop-comment-area">
+                        @for(int i = 0 ; i < Model.OrderCommentList.Count;i++){
+                                <div class="pop-one-comment">
+                                    <div class="pop-user-info">
+                                        <div class="d-flex">
+                                            <img class="user-pic" src="@Model.CommentOfUserList[i].Photo">
+                                            <div class="user-detail">
+                                                <div class="user-name">@Model.CommentOfUserList[i].Name</div>
+                                                <div class="comment-time">@Model.OrderCommentList[i].DateOver.ToString("yyyy年MM月")</div>
+                                            </div>
+                                        </div>
+                                        <div class="user-comment">
+                                            @Html.DisplayFor(model => model.OrderCommentList[i].Comment)
+                                        </div>
+                                    </div>
+                                </div>
+                        }
+                        </div>`,
+            });
+        })
+    </script>
+}

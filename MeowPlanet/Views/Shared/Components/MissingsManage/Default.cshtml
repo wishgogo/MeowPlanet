@@ -1,0 +1,205 @@
+﻿@model IEnumerable<MeowPlanet.ViewModels.Missings.ClueViewModel>
+@using System.Security.Claims;
+@{
+    bool isLogin = Int32.TryParse(User.Claims.Where(x => x.Type == ClaimTypes.Sid).Select(x => x.Value).FirstOrDefault(), out int memberId);
+}
+
+<style>
+
+    div.clue-item {
+        height: 30%;
+        border-radius: 25px;
+        box-shadow: 0 0 3rem rgb(134 171 190 / 30%) inset !important;
+        background-color: rgb(27, 39, 53);
+        margin-top: 1.5rem !important;
+        font-size: 1.15rem;
+    }
+
+    div:first-of-type.clue-item {
+        margin-top: 0.5rem !important;
+    }
+
+
+    .clue-item img {
+        height: 140px;
+        width: 180px;
+        object-fit: cover;
+        border-radius: 20px
+    }
+
+    #clue-detail img {
+        height: 60px;
+        width: 60px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    .speech-bubble {
+        position: relative;
+        background: #c9c9c9;
+        border-radius: 15px;
+        height: 140px;
+        width: 200px;
+        color: black;
+        bottom: 0;
+        left: 0;
+        border: 2px solid black;
+    }
+
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 70%;
+            width: 0;
+            height: 0;
+            border: 14px solid transparent;
+            border-right-color: #c9c9c9;
+            border-left: 0;
+            border-bottom: 0;
+            margin-top: -7px;
+            margin-left: -14px;
+        }
+
+    .btn-pin {
+        border: 2px solid white;
+        font-size: 1.1rem;
+        color: white;
+        background-color: #212529;
+        padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+        right: 0;
+        top: 10%;
+    }
+
+    .btn-pin-hover {
+        border-color: black;
+        color: black;
+        background-color: white;
+    }
+
+    .btn-remove {
+        border: 2px solid white;
+        font-size: 1.1rem;
+        color: white;
+        padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+        right: 0;
+        bottom: 10%;
+    }
+
+    button:disabled {
+        pointer-events: all !important;
+        cursor: not-allowed !important;
+        opacity: 0.3 !important;
+        border: none !important;
+    }
+
+    .clue-item a {
+        text-decoration: none;
+        color: white;
+    }
+
+        .clue-item a:hover {
+            color: wheat;
+        }
+</style>
+
+@foreach (var item in Model)
+{
+    <div class="clue-item p-3 me-3 d-flex justify-content-between">
+        <div class="col-3">
+            <img src="@item.ImagePath" />
+        </div>
+        <div class="col-9 d-flex">
+            <div class="col-4 d-flex flex-column justify-content-between" id="clue-detail">
+                <div>
+                    相遇日期 : @Html.DisplayFor(x => item.WitnessTime)
+                </div>
+                <div>
+                    距離走失地 @item.Distance 公尺
+                </div>
+                <div>
+                    <a asp-action="" data-id="@item.ProviderId" ><img src="@item.ProviderPhoto" /> @item.ProviderName<i class="fa-solid fa-comment-dots ms-2"></i></a>
+                </div>
+            </div>
+            <div class="col-8 position-relative">
+                <div class="speech-bubble position-absolute">
+                    <div class="overflow-auto h-100 w-100 py-2 px-3" style="word-break:break-all">
+                        @item.Description
+                    </div>
+                </div>
+                <button data-clue-id="@item.ClueId" class="position-absolute rounded-pill mx-2 btn-pin"><i class="fa-solid fa-circle-check me-2"></i>釘選此線索</button>
+                <button data-clue-id="@item.ClueId" class="position-absolute btn-danger rounded-pill mx-2 btn-remove"><i class="fa-solid fa-trash-can me-2"></i>移除此線索</button>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+<script>
+    $('.clue-item a').on('click', function(e) {
+        e.preventDefault();
+
+        let Id = $(this).data('id');
+        let myId = '@memberId';
+
+        messagebox.messageTo(Id, myId)
+    })
+
+
+    $('.btn-pin').hover(function() {
+        $(this).addClass('btn-pin-hover')
+    }, function() {
+        $(this).removeClass('btn-pin-hover')
+    })
+
+    $('.btn-pin').click(function() {
+
+        let btn = $(this);
+        let clueId = $(this).data('clueId');
+        let newStatus = 1;
+
+        $.post('/Missings/EditClue', { clueId, newStatus }, function(data) {
+
+            btn.closest('.clue-item').remove();
+
+            Swal.fire({
+                heightAuto: false,
+                icon: 'success',
+                title: data,
+                showConfirmButton: false,
+                timer: 2000
+            })
+        })
+    })
+
+    $('.btn-remove').click(function() {
+
+        let btn = $(this);
+        let clueId = btn.data('clueId');
+        let newStatus = 2;
+
+        $.post('/Missings/EditClue', { clueId, newStatus }, function(data) {
+
+            btn.closest('.clue-item').remove();
+
+            Swal.fire({
+                heightAuto: false,
+                icon: 'success',
+                title: data,
+                showConfirmButton: false,
+                timer: 2000
+            })
+        })
+    })
+
+    if ('@ViewBag.Status' == '1') {
+
+        $('.btn-pin').off('hover')
+        $('.btn-pin').prop('disabled', true)
+    }
+    else if ('@ViewBag.Status' == '2') {
+        $('.btn-remove').prop('disabled', true)
+    }
+
+</script>

@@ -1,0 +1,117 @@
+﻿@model  MeowPlanet.ViewModels.Sitters.SitterComfirmPayViewModels;
+@{
+    ViewData["Title"] = "預約明細";
+}
+@section Styles{
+    <link  href="~/css/sitter-comfirmpay.css" rel="stylesheet"/>
+}
+
+
+<div class="starsky">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
+    <div class="order-rec_div01">
+        <!-- 會員主人 -->
+        <div class="user-info_div02">
+            <!-- 保姆-->
+            <div class="rec_div7">
+                <div class="info-rec">
+                    <div class="title_div7-1">
+                        您預約的保姆
+                    </div>
+                    <div class="content_div7-2 ">
+                        <div>姓名 : @Model.SitterName</div>
+                        <div>電話 : (於保姆確認後顯示電話)</div>
+                        <div>地址 : (於保姆確認後顯示地址)</div>
+                    </div>
+                </div>
+                <img src="@Model.SitterPhoto" alt="">
+            </div>
+            <div class="hr-line"></div>
+
+            <!-- 主人 -->
+            <div class="rec_div7">
+                <div class="info-rec">
+                    <div class="title_div7-1">
+                        您的聯絡資訊
+                    </div>
+                    <div class="content_div7-2">
+                        <div>姓名 : @Model.UserName</div>
+                        <div>電話 : @Model.UserPhone</div>
+                    </div>
+                </div>
+                <img src="@Model.UserPhoto">
+            </div>
+
+            <div class="hr-line"></div>
+
+            <!--喵咪 -->
+            <div class="rec-last_div7">
+                <div class="info-rec">
+                    <div class="title_div7-1">
+                        您所選的貓咪
+                    </div>
+                    <div class="content_div7-2">
+                        <div>
+                            姓名 : @Model.CatName
+                            &nbsp&nbsp
+                            @if(@Model.Sex == true)
+                            {
+                                <i class="fa-solid fa-mars" style="color:#99b8d4;font-size:1.3rem"></i>
+                            }
+                            else
+                            {
+                                <i class="fa-solid fa-venus" style="color:#FF8EFF;font-size:1.3rem"></i>
+                            }
+                        </div>
+                        <div style="display: flex;">
+                            <div class="self-intro-tag_div5-2-1">貓<br />咪<br />介<br />紹</div>
+                            <div class="self-intro_div5-2-2">
+                                @Model.Introduce
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cat_div6">
+                    <img src="@Model.CatImg01">
+                    <div>品種 : @Model.BreedName</div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- 訂單細項 -->
+        <div class="order-info_div03">
+            <div class="order-detail_div05">
+                <div class="order-title_div9">預約明細</div>
+                <div class="order-content_div10">
+                    <div>保姆姓名 &nbsp : &nbsp @Model.ServiceName</div>
+                    <div>開始日期 &nbsp : &nbsp @Model.DateStart.ToString("d")</div>
+                    <div>結束日期 &nbsp : &nbsp @Model.DateOver.ToString("d")</div>
+                    <div>單日費用 &nbsp : &nbsp TWD $ @Model.Pay</div>
+                    <div>入住天數 &nbsp : &nbsp 共 &nbsp @Model.Night &nbsp 日 </div>
+                </div>
+                <div class="order-total_div11">TWD $ @Model.Total</div>
+            </div>
+            <div class="btn-rec_div06">
+                <form method="post" asp-action="AddOrder" asp-controller="Sitter">
+                    <input type="hidden" asp-for="ServiceId" value="@Model.ServiceId"/>
+                    <input type="hidden" asp-for="CatId" value="@Model.CatId"/>
+                    <input type="hidden" asp-for="DateStart" value="@Model.DateStart"/>
+                    <input type="hidden" asp-for="DateOver" value="@Model.DateOver"/>
+                    <input type="hidden" asp-for="Total" value="@Model.Total"/>
+                    <button type="submit" class="yes_div12">預&nbsp&nbsp約</button>
+                    <button type="button" class="cancel_div13">取&nbsp&nbsp消</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+    @section Scripts{
+        <script>
+            $('.cancel_div13').click(function(){
+                window.location.href = "/Sitter/Detail/@Model.ServiceId";
+            })
+        </script>
+    }

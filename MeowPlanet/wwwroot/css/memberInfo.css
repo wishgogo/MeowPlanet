@@ -1,0 +1,270 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background-color: #171b20;
+    background-image: radial-gradient(rgb(27, 39, 53) 0%, rgb(0, 0, 0) 100%);
+    overflow: hidden;
+    height: 100%;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--project-primary-color);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#member {
+    height: 100%;
+}
+
+.memberleft {
+    color: white;
+    padding: 1rem;
+    border: 2px rgb(219, 232, 248) solid;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    height: 700px;
+    border-radius: 30px;
+}
+
+    .memberleft img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        cursor: pointer;
+        border-radius: 50%;
+        margin-bottom: 15px;
+    }
+
+.col-3 {
+    width: 20%;
+}
+
+.memberleft p {
+    margin: 0;
+    font-size: 20px;
+}
+
+.memberleft a {
+    text-decoration: none;
+    color: white;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+    .memberleft a:hover {
+        color: white;
+        text-shadow: 0 0 1px white,0 0 3px white,0 0 5px white,0 0 7px white;
+    }
+
+.memberright {
+    color: white;
+    padding: 1rem;
+    border: 2px rgb(219, 232, 248) solid;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    height: 700px;
+    border-radius: 30px;
+    position:relative;
+}
+
+    .memberright p {
+        margin: 3px;
+        font-size: 14px;
+    }
+
+.title p {
+    font-size: 24px;
+}
+
+.memberright .member-region input {
+    color: white;
+    border: 2px rgb(219, 232, 248) solid;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 25px;
+    font-size: 25px;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.memberright .cat-region input {
+    color: white;
+    border: 2px rgb(219, 232, 248) solid;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 25px;
+    font-size: 25px;
+    width: 100%;
+    padding: 0 1rem;
+    text-align: center;
+}
+
+
+.member-region {
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 30px;
+    position: absolute;
+    left: 50px;
+    top:20px;
+}
+
+
+.mem-btn {
+    width: 150px;
+    height: 41.5px;
+    border: 2px rgb(219, 232, 248) solid;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 30px;
+    font-size: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cat-region {
+    background-color: rgb(27, 39, 53);
+    height: 90%;
+    border-radius: 25px;
+    padding: 30px;
+    position: absolute;
+    right: 50px;
+    top: 20px;
+    transition: all 0.2s ease;
+}
+
+.cat-region-title {
+    margin-left: 30px;
+}
+
+    .cat-region-title p {
+        font-size: 24px;
+    }
+
+    .cat-region-title .btn {
+        font-size: 18px;
+        color: white;
+        border: 2px rgb(219, 232, 248) solid;
+        box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+        border-radius: 30px;
+        width: 120px;
+        height: 41.5px;
+        margin-left: auto;
+    }
+
+        .cat-region-title .btn:hover {
+            color: black;
+            background: white;
+        }
+
+.cat-select {
+    border-radius: 30px;
+    margin-top: 15px;
+    width: 95%;
+    height: 155px;
+    background-color: #445366;
+}
+
+.cat-region-select {
+    margin-top: 15px;
+    height: 520px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.cat-detail {
+    border-radius: 30px;
+    margin-top: 15px;
+    width: 100%;
+    height: 480px;
+    background-color: #CCCCCC;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.cat-region textarea {
+    color: white;
+    border: 2px rgb(219, 232, 248) solid;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 25px;
+    font-size: 25px;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.cat-detail-btn {
+    color: white;
+    font-size: 25px;
+    border-radius: 20px;
+    width: 185px;
+    margin:10px;
+    border: 2px rgb(115, 244, 222) solid;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.member-update-btn {
+    color: white;
+    font-size: 25px;
+    border-radius: 20px;
+    width: 200px;
+    border: 2px rgb(115, 244, 222) solid;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.dropZone {
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    cursor: pointer;
+}
+
+    .dropZone:hover {
+        background: rgba(0, 0, 0, 0);
+    }
+
+.btn-backToList{
+    color:#fff;
+    padding:0px;
+    border:none;
+}
+
+    .btn-backToList:hover {
+        color: white;
+        text-shadow: 0 0 1px white,0 0 3px white,0 0 5px white,0 0 7px white;
+    }

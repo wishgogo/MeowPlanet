@@ -1,0 +1,108 @@
+﻿@model MeowPlanet.Models.Member
+
+@using System.Security.Claims;
+
+<div class="col-5 member-region my-3">
+    <form method="post" asp-action="UpdateMember" asp-controller="Member" enctype='multipart/form-data' autocomplete="off">
+        <input type="text" value="@Model.MemberId" asp-for="MemberId" class="d-none" />
+        <div class="title"><p>會員資料</p></div>
+        <div style="margin-top:35px;margin-bottom:35px;">
+            <p>Email</p>
+            <input type="email" value="@Model.Email" id="email-in" asp-for="Email" disabled />
+        </div>
+        <div>
+            <p>密碼</p>
+            <input type="password" value="@Model.Password" id="password-in" asp-for="Password" />
+            <div style="height:35px">
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+        </div>
+        <div>
+            <p>姓名</p>
+            <input type="text" value="@Model.Name" id="name-in" asp-for="Name" />
+            <div style="height:35px">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        <div>
+            <p>電話</p>
+            <input type="text" value="@Model.Phone" id="phone-in" asp-for="Phone" />
+            <div style="height:35px">
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-light member-update-btn" id="member-update">修改資料</button>
+        </div>
+    </form>
+</div>
+
+<div class="col-6 cat-region my-3" id="cat-region">
+    <div class="cat-region-title d-flex">
+        <p>喵星人</p>
+        <a class="btn" asp-controller="Member" asp-action="CreateCat">+建立</a>
+    </div>
+    <div class="cat-region-select" id="cat-region-select">
+    </div>
+</div>
+
+<partial name="_ValidationScriptsPartial" />
+<script>
+    var nocathtml = `<div class="h-100 w-100 d-flex align-items-center justify-content-center" id="noCat">
+                        <p style="font-size:24px;">您尚未建立貓咪<br />請點擊右上角建立</p>
+                    </div>`
+    $(function() {
+
+        $.get("@Url.Action("GetCatInfo", "Member")", function(data) {
+            if (data == "nocat") {
+                $("#cat-region-select").html(nocathtml)
+            } else {
+
+                $("#cat-region-select").html(data)
+            }
+
+        })
+    })
+
+
+    if ("@User.FindFirst(ClaimTypes.Role).Value" == "google") {
+        $('#email-in').attr('disabled', 'disabled');
+        $('#password-in').attr('disabled', 'disabled');
+        $('#phone-in').attr('disabled', 'disabled');
+        $('#name-in').attr('disabled', 'disabled');
+        $('#member-update').attr('disabled', 'disabled');
+    }
+
+    function ToDetail(id) {
+
+        $("#cat-region-select").html("")
+
+        $(".member-region").css("display", "none")
+
+        $("#cat-region").removeClass("col-6").css("width", "91.66%")
+
+        $.get("@Url.Action("GetCatDetail", "Member")", { CatId: id }, function(data) {
+            $("#cat-region-select").html(data)
+        })
+    }
+
+    $('#member-update').click(function(e) {
+        e.preventDefault();
+        var form = $(this).parents('form');
+        if (form.valid()) {
+            Swal.fire({
+                heightAuto: false,
+                position: 'center',
+                icon: 'success',
+                title: '修改完成',
+                showConfirmButton: false,
+                timer: 2500
+            }).then(function() {
+                form.submit();
+            })
+        }
+
+    })
+
+</script>

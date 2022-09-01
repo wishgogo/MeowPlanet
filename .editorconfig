@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CA5351: 請勿使用損壞的密碼編譯演算法
+dotnet_diagnostic.CA5351.severity = none

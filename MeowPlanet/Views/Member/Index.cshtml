@@ -1,0 +1,178 @@
+﻿@model MeowPlanet.Models.Member
+@using System.Security.Claims;
+
+@{
+    ViewData["Title"] = "會員中心";
+}
+
+@section Styles{
+    <link href="~/css/memberInfo.css" rel="stylesheet" />
+    <link href="~/css/stars.css" rel="stylesheet" />
+}
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
+
+    <section id="member" class="d-flex align-items-center" style="overflow:hidden;">
+
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-3 memberleft mx-3">
+                    <div class="d-flex">
+                        <form method="post" asp-action="UpdatePhoto" asp-controller="Member" enctype='multipart/form-data' autocomplete="off">
+                            <div class="img-wrap text-center">
+                                <img src="@Model.Photo" id="photoPreview" />
+                                <input type="file" class="d-none" name="memberPhoto" id="photoInput" />
+                                <input type="text" value="@Model.MemberId" name="memberId" class="d-none" />
+                                <a style="font-size:14px;" id="savePhoto">儲存頭像</a>
+                            </div>
+                        </form>
+                        <div class="col-5 p-wrap text-center">
+                            <div class="d-flex align-items-center justify-content-center" style="height:120px;">
+                                <p class="text-center">@Model.Name</p>
+                            </div>
+                            <div style="height:35px;"></div>
+                        </div>
+
+                    </div>
+                    <div class="flex-column d-flex justify-content-evenly" style="height:500px;">
+                        <div class="text-center">
+                            <a onclick="showAccount()">我的帳戶</a>
+                        </div>
+                        <div class="text-center">
+                            <a href="#" id="sitter">保姆管理</a>
+                        </div>
+                        <div class="text-center">
+                            <a href="#" id="adoption">領養資訊</a>
+                        </div>
+                        <div class="text-center">
+                            <a href="#" id="clues">協尋管理</a>
+                        </div>
+                        <div class="text-center">
+                            <a href="#" id="sitterRecord">預約紀錄</a>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-9 memberright mx-3 row d-flex justify-content-center" id="member-right-region">
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    @section Scripts{
+    <script>
+        $('.nav-item a').eq(3).addClass('nav-item-active');
+
+        $(function() {
+            $.get("@Url.Action("GetAccountInfo", "Member")", { MemberId: @Model.MemberId}, function(data) {
+                $("#member-right-region").html(data)
+            })
+        })
+
+        function showAccount() {
+            $.get("@Url.Action("GetAccountInfo", "Member")", { MemberId: @Model.MemberId}, function(data) {
+                $("#member-right-region").html(data)
+            })
+        }
+        $(document).on('click', '#backToList', () => {
+            showAccount()
+        })
+
+        //領養資訊
+        $('#adoption').click(() => {
+            $.get('/Adoption/LikeTolist', function(data) {
+                $('#member-right-region').html(data);
+            })
+        })
+        //走失資訊
+        $('#clues').click(() => {
+            $.get('/Missings/GetClues', function(data) {
+                if (data == "False") {
+                    Swal.fire({
+                        title: '您尚未有貓咪走失',
+                        text: '是否要前往刊登頁面?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: '前往刊登',
+                        cancelButtonText: '下次一定',
+                        heightAuto: false,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "/Missings";
+                        }
+                        else {
+                            return false
+                        }
+                    })
+                }
+                else {
+                    $('#member-right-region').html(data);
+                }
+            })
+        })
+        //保姆資訊
+        $('#sitter').click(() => {
+            $.get('/Sitter/SitterBox', function(data) {
+                $('#member-right-region').html(data);
+            })
+        })
+
+        //預約紀錄
+        $('#sitterRecord').click(() => {
+            $.get('/Sitter/SitterReserveRecord', function(data) {
+                $('#member-right-region').html(data);
+            })
+        })
+
+
+        $(document).on({
+            'click': () => $('#photoInput').trigger('click'),
+            'dragover': (event) => event.preventDefault(),
+            'drop': (event) => {
+                event.preventDefault();
+
+                let file = event.originalEvent.dataTransfer.files[0];
+                let reader = new FileReader();
+
+                reader.readAsDataURL(file);
+                reader.onload = function(e) {
+                    $('#photoPreview').attr('src', e.target.result);
+                }
+
+                let dt = new DataTransfer();
+                dt.items.add(file);
+                $('#photoInput')[0].files = dt.files;
+            }
+        }, '#photoPreview')
+
+
+        $(document).on('change', '#photoInput', function() {
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                $('#photoPreview').attr('src', e.target.result);
+            }
+            reader.readAsDataURL($('#photoInput')[0].files[0])
+        })
+
+        $('#savePhoto').click(function(e) {
+            e.preventDefault();
+            var form = $(this).parents('form');
+            Swal.fire({
+                heightAuto: false,
+                position: 'center',
+                icon: 'success',
+                title: '已儲存',
+                showConfirmButton: false,
+                timer: 2500
+            }).then(function() {
+                form.submit();
+            })
+        })
+
+    </script>
+
+}

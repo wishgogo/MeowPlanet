@@ -1,0 +1,206 @@
+﻿@model IEnumerable<MeowPlanet.ViewModels.Sitters.SitterWorkViewModel>;
+@{
+    int i = 0;  
+}
+<link href="~/css/sitter-workmanage.css" rel="stylesheet" />
+
+<div style="overflow-y: auto;margin: 0 auto;width: 810px;display: flex;">
+    <div id="accordionExample" class="div1">
+        <!-- 待確認訂單 -->
+        <div class="div1-01"><i class="fa-solid fa-circle-question"></i> &nbsp 待 &nbsp 確 &nbsp 認</div>
+        @foreach (var item in Model)
+        {
+            if (item.Status == 0)
+            {
+                string collapse = "collapse" + i;
+                <div class="div1-1">
+                    <!-- data-target="#collapse【1】"***需更改數字*** -->
+                    <div data-toggle="collapse" data-target="#@collapse" class="div2">
+                        <div class="div2-1">                                
+                            <div class="div2-1-1"><i class="fa-solid fa-user-large"></i> &nbsp &nbsp 貓咪姓名: @item.CatName &nbsp</div>
+                            <div class="div2-1-2">| &nbsp &nbsp 住宿日期:@item.DateStart.ToString("yyyy年MM月dd日") - @item.DateOver.ToString("MM月dd日") &nbsp (共 @item.DateOver.Subtract(item.DateStart).ToString("%d") 日)</div>
+                        </div>
+                        <div class="div2-2">
+                            <i class="fa-solid fa-angles-down"></i>
+                        </div>
+                    </div>
+                    <!-- id="collapse【1】"***需更改數字***   -->
+                    <div id="@collapse" class="div3 collapse card-body" data-parent="#accordionExample">
+                        <div class="div4">
+                            <div style="display: flex;">
+                                <div>
+                                    <!-- 主人 -->
+                                    <div style="display: flex;">
+                                        <div class="div4-1">
+                                            <img src="@item.UserPhoto" alt="">
+                                        </div>
+                                        <div class="div4-2">
+                                            <div class="div4-2-1">
+                                                <div>顧客姓名 : @item.UserName </div>
+                                                <div>顧客電話 : @item.UserPhone</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*貓咪*@
+                                    <div class="div0-1">
+                                        <div class="div5-1">
+                                            <img src="@item.CatImg01">
+                                            <div class="div5-1-1">@item.BreedName</div>
+                                        </div>
+                                        <div>
+                                            <div> 貓咪姓名 : @item.CatName &nbsp
+                                                @if (@item.Sex == true)
+                                                {
+                                                <i class="fa-solid fa-mars" style="color:#99b8d4;font-size:1.3rem"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa-solid fa-venus" style="color:#FF8EFF;font-size:1.3rem"></i>
+                                                }
+                                            </div>
+                                            <div class="div5-2-1"> @item.Introduce </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 訂單細項 -->
+                                <div class="div6">
+                                    <div class="div6-1">
+                                        <div class="div6-1-1">訂單明細</div>
+                                        <div class="div6-1-2">
+                                            <div>開始日期 : @item.DateStart.ToString("yyyy/MM/dd")</div>
+                                            <div>結束日期 : @item.DateOver.ToString("yyyy/MM/dd")</div>
+                                            <div style="margin: 5px 0px 0px 20px;">《共入住 &nbsp @item.DateOver.Subtract(item.DateStart).ToString("%d") 日》</div>
+                                            <div class="div6-1-3">TWD $ @item.Total</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="div7">
+                            <div type="button" class="div7-1" data-order-id="@item.OrderId" data-status="1">接受訂單</div>
+                            <div type="button" class="div7-2" data-order-id="@item.OrderId" data-status="3">拒絕訂單</div>
+                        </div>
+                    </div>
+                </div>
+                i++;
+            }
+        }
+        <!-- 已確認訂單區 -->
+        <div class="div1-01"><i class="fa-solid fa-circle-check"></i> &nbsp 已 &nbsp 確 &nbsp 認</div>
+        @foreach (var item in Model)
+        {
+            if (item.Status == 1)
+            {
+                string collapse = "collapse" + i;
+
+                <div class="div1-1">
+                    <div data-toggle="collapse" data-target="#@collapse" class="div2">
+                        <div class="div2-1">                                
+                            <div class="div2-1-1"><i class="fa-solid fa-user-large"></i> &nbsp &nbsp 貓咪姓名: @item.CatName &nbsp</div>
+                            <div class="div2-1-2">| &nbsp &nbsp 住宿日期:@item.DateStart.ToString("yyyy年MM月dd日") - @item.DateOver.ToString("MM月dd日") &nbsp (共 @item.DateOver.Subtract(item.DateStart).ToString("%d") 日)</div>
+                        </div>
+                        <div class="div2-2">
+                            <i class="fa-solid fa-angles-down"></i>
+                        </div>
+                    </div>
+                    <div id="@collapse" class="div3-1 collapse card-body" data-parent="#accordionExample">
+                        <div class="div4">
+                            <div style="display: flex;">
+                                <div>
+                                    <!-- 主人 -->
+                                    <div style="display: flex;">
+                                        <div class="div4-1">
+                                            <img src="@item.UserPhoto" alt="">
+                                        </div>
+                                        <div class="div4-2">
+                                            <div class="div4-2-1">
+                                                <div>顧客姓名 : @item.UserName </div>
+                                                <div>顧客電話 : @item.UserPhone</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*貓咪*@
+                                    <div class="div0-1">
+                                        <div class="div5-1">
+                                            <img src="@item.CatImg01">
+                                            <div class="div5-1-1">@item.BreedName</div>
+                                        </div>
+                                        <div>
+                                            <div> 貓咪姓名 : @item.CatName &nbsp
+                                            @if (@item.Sex == true)
+                                            {
+                                                <i class="fa-solid fa-mars" style="color:#99b8d4;font-size:1.3rem"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="fa-solid fa-venus" style="color:#FF8EFF;font-size:1.3rem"></i>
+                                            }
+                                            </div>
+                                            <div class="div5-2-1"> @item.Introduce </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 訂單細項 -->
+                                <div class="div6">
+                                    <div class="div6-1">
+                                        <div class="div6-1-1">訂單明細</div>
+                                        <div class="div6-1-2">
+                                            <div>開始日期 : @item.DateStart.ToString("yyyy/MM/dd")</div>
+                                            <div>結束日期 : @item.DateOver.ToString("yyyy/MM/dd")</div>
+                                            <div style="margin: 5px 0px 0px 20px;">《共入住 &nbsp @item.DateOver.Subtract(item.DateStart).ToString("%d") 日》</div>
+                                            <div class="div6-1-3">TWD $ @item.Total</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                i++;
+            }
+        }
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+<script>
+    $('.div7 div').on('click', function(){
+
+        let orderId = $(this).data('orderId');
+        let status = $(this).data('status');
+        let title;
+
+        if(status == 1){
+            title = "已確認接單!!" //接受訂單的內容
+        }else{
+            title = "確認拒絕此訂單?" //拒絕訂單的內容
+        }
+
+
+        Swal.fire({
+            title,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '確定',
+            cancelButtonText: '返回',
+            heightAuto: false,
+
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+
+                //執行後端的內容 
+                $.post('/Sitter/SetOrderStatus', {orderId,status}, function(){
+                    //執行更新內容
+                    $.get('/Sitter/SitterWorkManage', function(data) {
+                        $('#sitterContent').html(data);
+                    })
+                })                            
+            }
+        })
+    })
+</script>

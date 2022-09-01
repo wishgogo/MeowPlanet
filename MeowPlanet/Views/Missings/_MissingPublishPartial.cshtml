@@ -1,0 +1,162 @@
+﻿@using MeowPlanet.Models;
+@model Missing;
+@{
+    List<Cat> cats = ViewData["cats"] as List<Cat>;
+}
+
+<style>
+
+    #missing-publish {
+        font-size: 1.2rem;
+        color: white;
+    }
+
+        #missing-publish .modal-footer button {
+            font-size: 1.1rem;
+            padding: 0.3rem 1.5rem 0.3rem 1.5rem;
+            font-size: 1.1rem;
+            border: 1px solid white;
+        }
+
+
+            #missing-publish .modal-footer button:hover {
+                border-color: black;
+                color: black;
+                background-color: white;
+            }
+
+        #missing-publish .carousel-caption {
+            position: static;
+            padding-bottom: 0.5rem;
+            padding-top: 0;
+        }
+
+    #my-cats {
+        margin: auto;
+    }
+
+        #my-cats img {
+            height: 150px;
+            width: 150px;
+            border-radius: 50%;
+            margin: auto;
+            object-fit: cover;
+        }
+
+</style>
+
+<div class="modal-dialog modal-dialog-centered" style="width:450px;">
+    <div class="modal-content" style="background-color: rgb(27, 39, 53);">
+        <form method="post" autocomplete="off" id="missing-publish">
+            <div class="modal-header">
+                <h4 class="modal-title text-light m-auto" id="exampleModalLabel">走失資訊</h4>
+            </div>
+            <div class="modal-body py-4 px-5">
+                <div id="my-cats" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+                    <div class="carousel-inner">
+                        @foreach (var cat in cats)
+                        {
+                            <div class="carousel-item" data-cat-id="@cat.CatId">
+                                <div class="carousel-caption">
+                                    <h5>@cat.Name</h5>
+                                </div>
+                                <img src="@cat.Img01" class="d-block">
+                            </div>
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#my-cats" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#my-cats" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="form-group mt-4 text-center">
+                    <span>走失日期</span>
+                    <input type="text" class="form-control rounded-pill mt-2 text-center" id="datepicker" asp-for="Date" readonly/>
+                    <span asp-validation-for="Date" class="text-danger" style="font-size: 0.8rem"></span>
+                </div>
+                <div class="form-group mt-4 text-center">
+                    <span>其他描述</span>
+                    <input type="text" class="form-control rounded-pill mt-2 text-center" asp-for="Description" />
+                    <span asp-validation-for="Description" class="text-danger" style="font-size: 0.8rem"></span>
+                </div>
+                <input type="hidden" id="catId" value="@cats.FirstOrDefault().CatId" asp-for="CatId" />
+                <input type="hidden" id="lat" asp-for="Lat" />
+                <input type="hidden" id="lng" asp-for="Lng" />
+            </div>
+            <div class="modal-footer justify-content-around">
+                <button type="submit" class="btn btn-dark rounded-pill"><i class="fa-solid fa-check me-2"></i>刊登</button>
+                <button type="button" class="btn btn-danger rounded-pill" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-2"></i>取消</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    (() => {
+        let selectedCat = '@cats.FirstOrDefault().CatId';
+        let lat;
+        let lng;
+
+        $('#my-cats').on('slid.bs.carousel', function() {
+            selectedCat = $('#my-cats .active').data('catId')
+        })
+
+        $('#missing-publish').on('submit', function(e) {
+
+            e.preventDefault();
+
+            $('#catId').val(selectedCat);
+            $('#lat').val(lat);
+            $('#lng').val(lng);
+
+            let data = $(this).serialize();
+
+            $.post('/Missings/AddMissing', data, function(data) {
+
+                if (data == "OK") {
+
+                    $('#cancel-publish').trigger('click');
+
+                    Swal.fire({
+                        heightAuto: false,
+                        position: 'center',
+                        icon: 'success',
+                        title: '協尋發布成功',
+                        text: '祝您早日尋回愛貓',
+                        showConfirmButton: false,
+                        timer: 2000
+                    }).then(() => {
+                        location.reload();
+                    })
+
+                    $('#publishModal').modal('hide');
+                }
+            }).fail(() => {
+
+                Swal.fire({
+                    heightAuto: false,
+                    position: 'center',
+                    icon: 'warning',
+                    title: '您有未填的項目',
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+            })
+        })
+
+        $(function() {
+
+            lat = $('#lat').val();
+            lng = $('#lng').val();
+
+            $('.carousel-item').first().addClass('active')
+
+            //$("#datepicker").datepicker($.datepicker.regional['tw']);
+            $("#datepicker").datepicker({ maxDate: 0 });
+
+        });
+    })()
+
+</script>

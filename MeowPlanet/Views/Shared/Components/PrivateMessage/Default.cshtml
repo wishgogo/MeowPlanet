@@ -1,0 +1,602 @@
+﻿@model MeowPlanet.ViewModels.MessageBoxModel
+@using System.Security.Claims;
+@using System.Globalization;
+@{
+    DateTime today = DateTime.Now.Date;
+    string userName = "";
+    string userPhoto = "";
+    bool hasUnread = false;
+    bool isLogin = Int32.TryParse(User.Claims.Where(x => x.Type == ClaimTypes.Sid).Select(x => x.Value).FirstOrDefault(), out int memberId);
+    if (isLogin == true)
+    {
+        userName = @Model.UserName;
+        userPhoto = @Model.UserPhoto;
+        hasUnread = @Model.HasUnread;
+    }
+}
+
+<style>
+
+    #message-open {
+        position: fixed;
+        right: 0;
+        bottom: 50px;
+        z-index: 5000000000;
+    }
+
+    #message-close {
+        transform: translate(calc(-100%), 20%);
+        z-index: 5000000000;
+    }
+
+    .message-btn {
+        border: 0;
+        width: 40px;
+        background-color: wheat;
+        padding: 10px;
+        border-bottom-left-radius: 10px;
+        border-top-left-radius: 10px;
+        font-size: 18px;
+        box-shadow: 0 0 15px white;
+    }
+
+        .message-btn:hover {
+            background-color: #C2AF8D;
+        }
+
+    #message-box {
+        font-size: 1rem;
+        border-bottom-left-radius: 20px;
+        border-top-left-radius: 20px;
+        z-index: 5000000000;
+        background-color: #c9c9c9;
+        height: 400px;
+        width: 700px;
+        position: fixed;
+        right: 0;
+        bottom: 50px;
+        padding: 0
+    }
+
+    #message-body {
+        display: inline-block;
+        border-bottom-left-radius: 25px;
+        border-top-left-radius: 25px;
+        width: 65%;
+        background-color: whitesmoke;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    #message-user {
+        display: inline-block;
+        width: calc(40% - 10px);
+        background-color: white;
+        height: 100%;
+        overflow-y: auto;
+        padding: 5px;
+    }
+
+    #message-content {
+        flex-basis: 75%;
+        padding: 0.5rem;
+        overflow-y: auto;
+    }
+
+
+        #message-content::-webkit-scrollbar, #message-user::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        /* Track */
+        #message-content::-webkit-scrollbar-track, #message-user::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 5px grey;
+            border-radius: 6px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* Handle */
+        #message-content::-webkit-scrollbar-thumb, #message-user::-webkit-scrollbar-thumb {
+            background: #b99668;
+            border-radius: 6px;
+        }
+
+            /* Handle on hover */
+            #message-content::-webkit-scrollbar-thumb:hover, #message-user::-webkit-scrollbar-thumb:hover {
+                background: #b996689c;
+            }
+
+    #message-input {
+        flex-basis: 25%;
+    }
+
+    #message-box textarea {
+        z-index: 10000000000;
+        resize: none;
+        box-shadow: none;
+    }
+
+    .message-right {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-start;
+        margin-bottom: 10px;
+    }
+
+    .message-left {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 10px;
+    }
+
+        .message-left > img, .message-right > img {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+    .time {
+        color: gray;
+        font-size: 0.7rem;
+    }
+
+    .message {
+        width: auto;
+        max-width: 250px;
+        padding: 10px;
+        border-radius: 7px;
+        background-color: papayawhip;
+        box-shadow: 0 0 15px grey;
+        overflow-wrap: break-word;
+    }
+
+    .contact:hover {
+        background-color: papayawhip;
+        cursor: pointer;
+    }
+
+    .contact-active {
+        background-color: papayawhip;
+    }
+
+    .contact img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .unread {
+        height: 25px;
+        width: 25px;
+        border-radius: 50%;
+        background-color: firebrick;
+        color: white;
+        text-align: center
+    }
+
+    @@keyframes newMessage {
+        0% {
+            background-color: wheat;
+            color: black;
+        }
+
+        50% {
+            background-color: #171b20;
+            color: whitesmoke;
+        }
+
+        100% {
+            background-color: wheat;
+            color: black;
+        }
+    }
+
+    .newMessage {
+        animation: newMessage 1s infinite;
+    }
+
+    @@media screen and (max-width: 992px) {
+        .message-btn {
+            font-size: 10px;
+        }
+    }
+
+</style>
+
+<button id="message-open" class="message-btn" data-bs-toggle="collapse" data-bs-target="#message-box"><i class="fa-solid fa-comment-dots"></i> 即時通訊</button>
+
+<div class="collapse collapse-horizontal" id="message-box">
+    <div class="d-flex h-100 w-100">
+        <button id="message-close" class="message-btn position-absolute" data-bs-toggle="collapse" data-bs-target="#message-box"><i class="fa-solid fa-xmark"></i> 關閉</button>
+        <div id="message-body" class="d-flex flex-column">
+            <div id="message-content"></div>
+            <textarea disabled maxlength="100" class="form-control" id="message-input" placeholder="按Enter發送訊息 或在此貼上圖片"></textarea>
+            <input type="hidden" id="userId" value="" />
+        </div>
+        <div id="message-user">
+            @if (Model != null && Model.ContactMembers != null)
+            {
+                foreach (var member in Model.ContactMembers)
+                {
+                    <div class="d-flex contact justify-content-between align-items-center border-bottom p-2 mb-2" data-id="@member.Id">
+                        <div>
+                            <img src="@member.Photo" />
+                            @member.Name
+                        </div>
+                        <div class="d-flex flex-column justify-content-between align-items-end">
+                            <p style="font-size: 0.5rem;color: gray" class="last-time">
+                                @if (@member.LastTime.Date == today)
+                                {
+                                    @member.LastTime.ToString("tth:mm", new CultureInfo("zh-tw"))
+                                    ;
+                                }
+                                else if (@member.LastTime.Date == today.AddDays(-1))
+                                {
+                                    @Html.Raw("昨天")
+                                }
+                                else
+                                {
+                                    @member.LastTime.ToString("M/dd", new CultureInfo("zh-tw"))
+                                }
+                            </p>
+                            @if (member.UnreadCount > 0)
+                            {
+                                <div class="unread">
+                                    @member.UnreadCount
+                                </div>
+
+                            }
+                            else
+                            {
+                                <div class="unread opacity-0">
+                                    0
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+<script>
+
+    let messagebox = (() => {
+        let contactList = [];
+        let clickedMemberId;
+
+        //連結到訊息接收人
+        function messageTo(Id, myId) {
+
+            let memberId = parseInt(Id);
+            let selfId = parseInt(myId);
+
+            if (memberId == selfId) {
+                Swal.fire({
+                    heightAuto: false,
+                    position: 'center',
+                    title: '您無法對自己發送私訊',
+                    icon: 'warning',
+                    showConfirmButton: false,
+                    timer: 2500
+                })
+            }
+            else {
+                $('#message-box').collapse('show');
+
+                if (contactList.includes(memberId)) {
+                    $(`.contact[data-id="${memberId}"]`).trigger('click');
+                }
+                else {
+
+                    contactList.push(memberId);
+
+                    $.get('/Message/SearchMember', { memberId }, function(data) {
+                        $('#message-user').prepend(
+
+                            `<div class="d-flex contact justify-content-between align-items-center border-bottom p-2 mb-2" data-id="${memberId}">
+                                    <div>
+                                        <img src="${data.photo}" />
+                                        ${data.name}
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-between align-items-end">
+                                        <p style="font-size: 0.5rem;color: gray" class="last-time"></p>
+                                        <div class="unread opacity-0">0</div>
+                                    </div>
+                                </div>`
+
+                        )
+
+                        $(`.contact[data-id="${memberId}"]`).trigger('click');
+                    })
+                }
+            }
+        }
+
+
+        $(function() {
+
+            if ('@hasUnread' == 'True') {
+
+                $('#message-open').addClass('newMessage');
+            }
+
+
+            $('.contact').each(function() {
+                contactList.push($(this).data('id'));
+            })
+        })
+
+
+        function autoScroll() {
+            $('#message-content').scrollTop($('#message-content')[0].scrollHeight);
+        }
+
+
+        //連線
+        var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+        connection.start().then(function() {
+            console.log("已連接即時聊天");
+        }).catch(function(err) {
+            console.log('聊天系統發生了一點小問題: ' + err.toString());
+        });
+
+        //收到訊息
+        connection.on("ReceiveMessage", function(userName, userPhoto, message, senderId) {
+
+            let time = new Date().toLocaleTimeString().slice(0, -3);
+
+            if (clickedMemberId != senderId || $('#message-open').attr('aria-expanded') != 'true') {
+                $('#message-open').addClass('newMessage');
+            }
+
+            if (!contactList.includes(senderId)) {
+                $('#message-user').prepend(
+                    `<div class="d-flex contact justify-content-between align-items-center border-bottom p-2 mb-2" data-id="${senderId}">
+                                    <div>
+                                        <img src="${userPhoto}" />
+                                        ${userName}
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-between align-items-end">
+                                        <p style="font-size: 0.5rem;color: gray" class="last-time">${time}</p>
+                                        <div class="unread">1</div>
+                                    </div>
+                                </div>`
+                )
+
+                contactList.push(senderId);
+            }
+            else {
+
+                $(`.contact[data-id="${senderId}"] .last-time`).html(time);
+                $(`.contact[data-id="${senderId}"]`).prependTo('#message-user');
+
+                if (clickedMemberId == senderId) {
+
+                    let $messageLeft;
+
+                    if (message.includes('/images/message/')) {
+
+                        $messageLeft = $(
+                            `<div class="message-left">
+                                        <img class="me-2" src='${userPhoto}' />
+                                        <div class="d-flex flex-column align-items-start">
+                                            <div class="text-end mb-2">${userName} <span class="time">${time}</span></div>
+                                            <div class="message" style="border-top-left-radius: 0;">
+                                                <img src="${message}" style="max-width: 220px; max-height: 250px;object-fit: cover" />
+                                            </div>
+                                        </div>
+                                    </div>`
+                        )
+                    }
+
+                    else {
+                        $messageLeft = $(
+                            `<div class="message-left">
+                                        <img class="me-2" src='${userPhoto}' />
+                                        <div class="d-flex flex-column align-items-start">
+                                            <div class="text-end mb-2">${userName} <span class="time">${time}</span></div>
+                                            <div class="message" style="border-top-left-radius: 0;">${message}</div>
+                                        </div>
+                                    </div>`
+                        )
+                    }
+
+                    $("#message-content").append($messageLeft);
+                    setTimeout(() => {
+                        autoScroll();
+                    }, 200)
+                    let selfId = parseInt('@memberId');
+                    $.post('/Message/MessageRead', { selfId, memberId: senderId })
+                }
+
+                else {
+                    $(`.contact[data-id="${senderId}"] .unread`).removeClass('opacity-0');
+
+                    let unread = parseInt($(`.contact[data-id="${senderId}"] .unread`).html()) + 1;
+                    $(`.contact[data-id="${senderId}"] .unread`).html(unread);
+                }
+
+            }
+
+        });
+
+
+
+        //按ENTER傳送訊息
+        $('#message-input').on('keydown', function(e) {
+
+
+            if (e.key === 'Enter' || e.keyCode === 13) {
+
+                e.preventDefault();
+
+                if ($(this).val().replace(/\s/g, '').length == 0) {
+
+                    $(this).val('');
+
+                } else {
+
+                    let userName = '@userName';
+                    let userPhoto = '@userPhoto';
+                    let senderId = parseInt('@memberId');
+                    let receivedId = $('#userId').val();
+                    let message = $('#message-input').val();
+                    connection.invoke("SendMessage", userName, userPhoto, message, receivedId, senderId);
+
+                    $(this).val('');
+
+                    let time = new Date().toLocaleTimeString().slice(0, -3);
+                    let $messageRight = $(
+                        `<div class="message-right">
+                                    <img class="ms-2" src='${userPhoto}' />
+                                    <div class="d-flex flex-column align-items-end">
+                                        <div class="text-end mb-2"><span class="time">${time}</span> ${userName}</div>
+                                        <div class="message" style="border-top-right-radius: 0;">${message}</div>
+                                    </div>
+                                </div>`
+                    )
+
+                    $("#message-content").append($messageRight);
+
+                    $(`.contact[data-id="${receivedId}"]`).find('.last-time').text(time);
+                    $(`.contact[data-id="${receivedId}"]`).prependTo('#message-user');
+
+                    autoScroll();
+
+                    $.post('/Message/sendMessage', { message, receivedId })
+
+                }
+
+            }
+        });
+
+        $('#message-input').on('blur', function() {
+            $('#message-content').find('.separator').remove();
+        })
+
+        //點擊聯絡人框觸發交談 並且載入歷史訊息
+        $('#message-box').on('click', '.contact', function() {
+
+            $('.contact').removeClass('contact-active');
+            $(this).addClass('contact-active');
+            $(this).find('.unread').html('0').addClass('opacity-0');
+            $('#message-input').attr('disabled', false).trigger('focus');
+
+            let memberId = $(this).data('id');
+            clickedMemberId = memberId;
+            $('#userId').val(memberId);
+
+            $('#message-content').load('/Message/GetHistory', { memberId }, () => {
+
+                if (document.querySelector('.separator') != null) {
+                    let topPos = document.querySelector('.separator').offsetTop;
+                    document.getElementById('message-content').scrollTop = topPos - 10;
+                }
+                else {
+                    autoScroll()
+
+                }
+            });
+
+            let selfId = parseInt('@memberId');
+
+            $.post('/Message/MessageRead', { selfId, memberId })
+
+        })
+
+        $('#message-close').on('click', function() {
+
+            let hasUnread = false;
+
+            $('.contact .unread').each(function() {
+
+                if (parseInt($(this).text()) != 0) {
+                    hasUnread = true;
+                }
+            })
+
+            if (hasUnread == false) {
+                $('#message-open').removeClass('newMessage');
+            }
+        })
+
+        //貼上上傳圖片
+        $("#message-input").bind('paste', function(je) {
+
+            let e = je.originalEvent;
+            let userName = '@userName';
+            let userPhoto = '@userPhoto';
+            let senderId = parseInt('@memberId');
+            let receivedId = $('#userId').val();
+            let time = new Date().toLocaleTimeString().slice(0, -3);
+
+            for (var i = 0; i < e.clipboardData.items.length; i++) {
+
+                var item = e.clipboardData.items[i];
+
+                if (item.type.indexOf('image') != -1) {
+
+                    $(`.contact[data-id="${receivedId}"]`).find('.last-time').text(time);
+                    $(`.contact[data-id="${receivedId}"]`).prependTo('#message-user');
+
+                    let reader = new FileReader()
+
+                    reader.onload = function(e) {
+
+                        let $messageRight = $(
+                            `<div class="message-right">
+                                        <img class="ms-2" src='${userPhoto}' />
+                                        <div class="d-flex flex-column align-items-end">
+                                            <div class="text-end mb-2"><span class="time">${time}</span> ${userName}</div>
+                                            <div class="message" style="border-top-right-radius: 0;">
+                                                <img src="${e.target.result}" style="max-width: 220px; max-height: 250px;object-fit: cover" />
+                                            </div>
+                                        </div>
+                                    </div>`
+                        )
+
+                        $("#message-content").append($messageRight);
+                    }
+
+                    let file = item.getAsFile();
+                    reader.readAsDataURL(file);
+
+                    let formData = new FormData()
+                    formData.append('image', file);
+                    formData.append('receivedId', receivedId);
+
+                    $.ajax({
+
+                        url: '/Message/SendImage',
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function(data) {
+
+                            let message = data;
+                            connection.invoke("SendMessage", userName, userPhoto, message, receivedId, senderId);
+                            autoScroll();
+                        }
+                    })
+
+                    break;
+                }
+            }
+        });
+
+        return { messageTo, autoScroll };
+    })()
+
+</script>

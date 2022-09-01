@@ -1,0 +1,317 @@
+﻿@model MeowPlanet.ViewModels.Sitters.SitterViewModels
+@using System.Text.Json;
+@using System.Text.Json.Serialization;
+
+<style>
+.div0 {
+display: flex;
+}
+
+.div1 {
+    width: 950px;
+    height: 660px;
+    margin: auto;
+    border-radius: 10px;
+}
+
+.div2 {
+    display: flex;
+}
+
+.div2-1 {
+    width: 320px;
+    height: 50px;
+    font-size: 15px;
+    margin-top: 1px;
+    line-height: 5px;
+    font-weight: 900;
+    text-align: center;
+    color: #FFF;
+    border: 2.5px rgba(0, 150, 209, 0.829) solid;
+    padding: 1rem;
+    box-shadow: 0 0 0.7rem rgba(0, 150, 209, 0.829) inset;
+    background: rgba(0, 0, 0, .3);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    /* but轉成DIV特性 */
+    display: block;
+    transition: 0.5s;
+}
+
+    .div2-1:hover {
+        color: #FFF;
+        text-shadow: 0 0 1px rgba(0, 150, 209, 0.829), 0 0 3px rgba(0, 150, 209, 0.829), 0 0 5px rgba(0, 150, 209, 0.829), 0 0 7px rgba(0, 150, 209, 0.829);
+        box-shadow: 0 0 1.4rem rgba(0, 150, 209, 0.829) inset;
+    }
+
+.div3 {
+    width: 900px;
+    height: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-left: 30px;
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+}
+
+.div3-1 {
+    display: flex;
+    background-color: rgb(185, 150, 104);
+    width: 220px;
+    height: 45px;
+    border-radius: 30px;
+    line-height: 45px;
+    color: rgb(0, 0, 0);
+    font-size: 20px;
+    font-weight: 900;
+    margin-left: -15px;
+    margin-top: 10px;
+    padding-left: 10px;
+}
+
+.div3-1-1 {
+    display: flex;
+    background-color:rgb(26, 48, 68);
+    width: 220px;
+    height: 45px;
+    border-radius: 30px;
+    line-height: 45px;
+    color: #FFF;
+    font-size: 20px;
+    font-weight: 900;
+    margin-left: -15px;
+    margin-top: 10px;
+    padding-left: 10px;
+}
+
+.div4 {
+    width: 500px;
+}
+
+.div5 {
+    display: flex;
+    margin-top: 25px;
+}
+
+.div5-1 {
+    margin-right: 25px;
+}
+
+.div6 {
+    display: flex;
+    margin-top: 10px;
+}
+
+.div6-1 {
+    width: 100px;
+    margin-top: 15px;
+    margin-right: 20px;
+}
+
+.div6-2 {
+    width: 400px;
+    display: flex;
+    /* DIV換行 */
+    flex-wrap: wrap;
+    font-size: 15px;
+}
+
+.div6-3 {
+    width: 100px;
+    height: 35px;
+    margin-left: 10px;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* 字體置中 */
+    line-height: 35px;
+    /* 太空感  */
+    color: rgb(255, 255, 255);
+    /* padding: 1rem; */
+    border: 2px rgb(219, 232, 248) solid;
+    box-shadow: 0 0 0.5rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 10px;
+}
+
+.div7 {
+    margin-top: 30px;
+}
+
+.div7-1 {
+    width: 330px;
+    height: 200px;
+    margin-left: 2px;
+    margin-top: 2px;
+    /* 太空感  */
+    color: rgb(134, 171, 190, 0.5);
+    border: 2px rgb(219, 232, 248) solid;
+    box-shadow: 0 0 0.5rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 15px;
+}
+.pic{
+    object-fit: cover;
+}
+
+.div7-2 {
+    width: 82px;
+    height: 74px;
+    margin-left: 2px;
+    margin-top: 2px;
+    /* 太空感  */
+    color: rgb(134, 171, 190, 0.5);
+    border: 2px rgb(219, 232, 248) solid;
+    box-shadow: 0 0 0.5rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 15px;
+}
+
+.div8 {
+    display: flex;
+    margin-top: 35px;
+}
+
+.div8-1 {
+    width: 700px;
+    height: 150px;
+    margin-left: 35px;
+    margin-top: -5px;
+    overflow: auto;
+    /* 太空感  */
+    padding: 1rem;
+    border: 2px rgb(219, 232, 248) solid;
+    box-shadow: 0 0 0.5rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(137, 160, 243, 0.153);
+    border-radius: 15px;
+}
+
+.warning {
+    display: flex;
+    margin: 150px auto;
+    border: 3px solid #FFF;
+    justify-content: center;
+    width: 400px;
+    border-radius: 30px;
+    padding: 2rem;
+}
+</style>
+
+@if (Model ==null)
+{
+    <div class="warning">
+        <div style="padding: 0 1rem;">
+            <div class="text-center mb-3">您尚未建立保姆服務</div>
+            <button id="creatSitter" class="rounded-pill btn-primary p-3">去建立您的保姆服務</button>
+        </div>
+        <img src="/images/sitter/catquestion.png" style="width:100px;height:100px;">
+    </div>
+}
+else
+{
+<div id="accordionExample" class="div3">
+    <!-- 開關鈕 -->
+    <div class="div0">
+        @if(Model.sitter.IsService == true){
+            <div class="div3-1">
+                <div style="margin: 0px 15px 0px 10px; ">服務模式 &nbsp :</div>
+                <div> 營業中 </div>
+            </div>
+        }
+        else
+        {
+            <div class="div3-1-1">
+                <div style="margin: 0px 15px 0px 10px; ">服務模式 &nbsp :</div>
+                <div> 休息中 </div>
+            </div>
+        }
+        <div id="editMode" class="btn" style="color: #fff;Position: relative;left: 520px;align-items: center;display: flex;font-size: large;">
+            <i class="fa-solid fa-file-pen"></i> &nbsp 編輯資料
+        </div>
+    </div>
+
+    <div class="div0">
+        <div class="div4">
+            <!-- 服務名稱 -->
+            <div class="div5">
+                <div class="div5-1"> 服務名稱 &nbsp:</div>
+                <div>@Model.sitter.Name</div>
+            </div>
+
+            <!-- 服務位置 -->
+            <div class="div5">
+                <div class="div5-1">
+                    服務位置 &nbsp :
+                </div>
+                <div id="address">@Model.sitter.FormattedAddress</div>
+            </div>
+
+            <!-- 每日費用 -->
+            <div class="div5">
+                <div class="div5-1">
+                    每日費用 &nbsp :
+                </div>
+                <div> 新台幣 &nbsp @Model.sitter.Pay &nbsp 元</div>
+            </div>
+
+            <!-- 保姆特色 -->
+            <div class="div6">
+                <div class="div6-1">保姆特色&nbsp:</div>
+                <div class="div6-2">
+                    <div class="div6-3">@Model.sitter.Cage</div>
+                    <div class="div6-3">@Model.sitter.CatNumber</div>
+                    <div class="div6-3">@Model.sitter.Licence</div>
+                    <div class="div6-3">@Model.sitter.Monitor</div>
+                    <div class="div6-3">@Model.sitter.Meal</div>
+                    @for (int i = 0; i < @Model.sitterfeatureList.Count; i++)
+                    {
+                        <div class="div6-3">@Model.sitterfeatureList[i]</div>
+                    }
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 環境圖片 -->
+        <div class="div7">
+            <div class="div7-1"><img src="@Model.sitter.Img01" class="h-100 w-100 pic" style="border-radius:15px"/></div>
+            <div class="div0">
+                <div class="div7-2"><img src="@Model.sitter.Img02" class="h-100 w-100 pic" style="border-radius:15px" /></div>
+                <div class="div7-2"><img src="@Model.sitter.Img03" class="h-100 w-100 pic" style="border-radius:15px" /></div>
+                <div class="div7-2"><img src="@Model.sitter.Img04" class="h-100 w-100 pic" style="border-radius:15px" /></div>
+                <div class="div7-2"><img src="@Model.sitter.Img05" class="h-100 w-100 pic" style="border-radius:15px" /></div>
+            </div>
+        </div>
+
+    </div>
+    <!-- 保姆自介 -->
+    <div class="div8">
+        <div>保姆自介&nbsp:</div>
+        <div class="div8-1">@Model.sitter.Summary</div>
+    </div>
+</div>
+}
+
+<script>
+    {
+        let model = @Html.Raw(JsonSerializer.Serialize(Model));
+        let j = JSON.stringify(model);
+        $('#creatSitter').click(() => {
+            window.location.href = "/Member/CreateSitter";
+        })
+
+         $('#editMode').click(function(){
+            $.ajax({
+                method: 'post',
+                url: '/Sitter/SitterEditMode',
+                data: j,
+                contentType: 'application/json; charset=utf-8',
+                success: function(data) {
+                    $('#sitterContent').html(data);
+                },
+            });
+        });
+    }
+    @*這裡要用IIFE，否則model這個變數會外露到editmode 的 script*@
+</script>

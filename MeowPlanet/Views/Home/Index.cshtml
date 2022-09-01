@@ -1,0 +1,316 @@
+﻿@model IEnumerable<MeowPlanet.ViewModels.OrderCommentViewModel>
+
+@{
+    ViewData["Title"] = "首頁";
+}
+
+@section Styles{
+    <link href="~/css/homepage.css" rel="stylesheet" />
+}
+    <section id="web">
+        <section id="ti" style="overflow:hidden">
+            <div id="stars2"></div>
+            <div id="stars3"></div>
+            <div class="container-fluid">
+            </div>
+            <div class="img-bg1"></div>
+            <div class="bgdiv">
+                <p>在各方面為您的貓咪著想</p>
+                <a class="btn btn-light navbar-brand addbtn" asp-controller="Login" asp-action="Register">成為會員</a>
+            </div>
+        </section>
+
+        <section id="stroll-intro">
+            <div class="move-section" id="move-section1">
+
+                <div id="stars2"></div>
+                <div id="stars3"></div>
+                <div class="f-pic">
+
+                    <a asp-controller="Sitter" asp-action="Index" id="sitterLink">
+                        <div id="img4" class="move-div">
+                            <p class="p1">保姆</p>
+                        </div>
+                    </a>
+
+                    <a asp-controller="Adoption" asp-action="Index" id="adoptionLink">
+                        <div id="img5" class="move-div">
+                            <p class="p2">領養</p>
+                        </div>
+                    </a>
+
+                    <a asp-controller="Missings" asp-action="Index" id="missingsLink">
+                        <div id="img6" class="move-div">
+                            <p class="p3">協尋</p>
+                        </div>
+                    </a>
+
+                    <div class="intro-p1 d-flex align-items-center">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                        <p>搭配地圖搜尋</p>
+                    </div>
+
+                    <div class="intro-p2 d-flex align-items-center">
+                        <i class="fa-solid fa-location-pin-lock"></i>
+                        <p>保姆地址保護</p>
+                    </div>
+
+                    <div class="intro-p3 d-flex align-items-center">
+                        <i class="fa-solid fa-star-half-stroke"></i>
+                        <p>用戶使用評價</p>
+                    </div>
+
+
+                    <div class="intro-p4 d-flex align-items-center">
+                        <i class="fa-solid fa-heart"></i>
+                        <p>抽卡方式配對</p>
+                    </div>
+
+                    <div class="intro-p5 d-flex align-items-center">
+                        <i class="fa-solid fa-filter"></i>
+                        <p>客製化篩選器</p>
+                    </div>
+
+
+                    <div class="intro-p6 d-flex align-items-center">
+                        <i class="fa-solid fa-shield-cat"></i>
+                        <p>許多可愛貓貓</p>
+                    </div>
+
+                    <div class="intro-p7 d-flex align-items-center">
+                        <i class="fa-solid fa-map-pin"></i>
+                        <p>地圖建立點位</p>
+                    </div>
+
+                    <div class="intro-p8 d-flex align-items-center">
+                        <i class="fa-solid fa-clipboard-check"></i>
+                        <p>線索審核機制</p>
+                    </div>
+
+                    <div class="intro-p9 d-flex align-items-center">
+                        <i class="fa-solid fa-magnifying-glass-dollar"></i>
+                        <p>尋獲獎金功能</p>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="move-section" id="move-section2">
+            </div>
+            <div class="move-section" id="move-section3">
+            </div>
+            <div class="move-section" id="move-section4">
+            </div>
+        </section>
+
+        <div class="last-region">
+
+            <div id="stars2"></div>
+            <div id="stars3"></div>
+            <section id="feregion">
+                <div class="fediv">
+                    <div class="febg"></div>
+                    <div class="fetitle">
+                        <p>找到最適合您的貓咪服務</p>
+                    </div>
+                    <div class="fetext1-wrap">
+                        <img src="@Href("~/Images/sittericon.png")" alt="">
+                        <p>
+                            為孤單在家的貓咪<br>
+                            找個專業保姆陪伴
+                        </p>
+                    </div>
+                    <div class="fetext2-wrap">
+                        <img src="@Href("~/Images/homeicon.png")" alt="">
+                        <p>
+                            找到適合您的貓咪<br>
+                            讓他有個溫暖的家
+                        </p>
+                    </div>
+                    <div class="fetext3-wrap">
+                        <img src="@Href("~/Images/findicon.png")" alt="">
+                        <p>
+                            幫忙走失無助的貓咪<br>
+                            找到回家的路
+                        </p>
+                    </div>
+                    <div class="feimg1-wrap feimg1"></div>
+                    <div class="feimg2-wrap feimg2"></div>
+                    <div class="feimg3-wrap feimg3"></div>
+                </div>
+            </section>
+
+            <section id="showcom">
+                <div class="container-fluid">
+                    <h2>用戶評價</h2>
+
+                    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            @foreach (var item in Model.Select((value, index) => new { value, index }))
+                        {
+                            if (item.index == 0)
+                            {
+                                <div class="carousel-item active">
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <img src="@item.value.Photo" alt="..." style="object-fit:cover">
+                                        <div class="w-p-wrap d-flex align-items-center">
+                                            <p>@item.value.Comment</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+
+                                <div class="carousel-item">
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <img src="@item.value.Photo" alt="..." style="object-fit:cover">
+                                        <div class="w-p-wrap d-flex align-items-center">
+                                            <p>@item.value.Comment</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+</section>
+
+<section id="mob">
+    <section id="catbanner">
+        <div class="container d-flex">
+            <div class="row">
+                <p>
+                    在各方面為您的貓咪著想
+                </p>
+                <a asp-controller="Login" asp-action="Register" class="btn d-flex">
+                    成為會員
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="sec d-flex">
+        <p class="func">功 能 選 擇</p>
+    </div>
+
+    <section>
+        <a asp-controller="Sitter" asp-action="Index" id="sitterLink">
+            <div class="sitter d-flex">
+                <p>保 姆</p>
+            </div>
+        </a>
+
+        <a asp-controller="Adoption" asp-action="Index" id="adoptionLink">
+            <div class="adopt d-flex">
+                <p>領 養</p>
+            </div>
+        </a>
+
+        <a asp-controller="Missings" asp-action="Index" id="missingsLink">
+            <div class="find d-flex">
+                <p>協 尋</p>
+            </div>
+        </a>
+    </section>
+
+    <div class="third d-flex">
+        <p>找到最適合您的貓咪服務</p>
+    </div>
+
+    <section id="service">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <img class="ml-4" src="@Href("~/Images/service5.jpg")">
+                </div>
+                <div class="col">
+                    <p class="mr-4">為孤單在家的貓咪<br>找個專業保姆陪伴</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="ml-4">幫忙走失無助的貓<br>咪找到回家的路</p>
+                </div>
+                <div class="col">
+                    <img class="mr-4" src="@Href("~/Images/service6.jpg")">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <img class="ml-4" src="@Href("~/Images/service4.jpg")">
+                </div>
+                <div class="col">
+                    <p class="mr-4">找到適合您的貓咪<br>讓他有個溫暖的家</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="fourth d-flex">
+        <p>用戶評價</p>
+    </div>
+
+    <section id="car">
+
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+
+                @foreach (var item in Model.Select((value, index) => new { value, index }))
+                {
+                    if (item.index == 0)
+                    {
+                        <div class="carousel-item active">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <img src="@item.value.Photo" alt="..." style="object-fit:cover">
+                                <div class="p-wrap d-flex align-items-center">
+                                    <p>@item.value.Comment</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+
+                        <div class="carousel-item">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <img src="@item.value.Photo" alt="..." style="object-fit:cover">
+                                <div class="p-wrap d-flex align-items-center">
+                                    <p>@item.value.Comment</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </section>
+</section>
+
+@section Scripts{
+    <script src="~/js/homepage.js"></script>
+
+}

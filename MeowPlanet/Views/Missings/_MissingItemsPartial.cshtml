@@ -1,0 +1,54 @@
+﻿@model MeowPlanet.ViewModels.Missings.ItemsViewModel
+
+<style>
+    img.w-100.h-100{
+        object-fit: cover;
+    }
+</style>
+
+<div id="missing-@Model.MissingId" data-clue-count="@Model.ClueCount" data-id="@Model.MissingId" style="display:none;" class="container-fluid cat-item" onclick="itemClicked(this)" onmouseenter="itemActive(this)" onmouseleave="itemInactive(this)">
+    <div class="row mt-2" style="border-bottom: 2px solid white; min-height: 180px">
+        <div class="col-6 d-flex flex-column " style="justify-content: space-evenly; align-items:stretch">
+            <div style="height: 99px; width: 132px">
+                <img src="@Model.Image" class="w-100 h-100" style="border: 0px solid white; border-radius: 15px" />
+            </div>
+            <div class="position-relative" style="top: 6.5px">
+                最近線索 :
+                @if (Model.UpdateDate.HasValue)
+                {
+                    <div class="text-end">@Html.DisplayFor(a => Model.UpdateDate)</div>
+                }
+                else
+                {
+                    <div class="text-end">暫無線索</div>
+                }
+            </div>
+        </div>
+        <div class="col-6 d-flex flex-column " style="justify-content: space-evenly; align-items:stretch">
+            <div>@Model.Name</div>
+            <div>@Model.Breed</div>
+            @if (Model.Sex == false)
+            {
+                <div>女生</div>
+            }
+            else
+            {
+                <div>男生</div>
+            }
+
+            @if (Model.ClueCount == 0)
+            {
+                <div>暫無線索</div>
+            }
+            else
+            {
+                <div>共有 @Model.ClueCount 條線索</div>
+            }
+            <div style="position: relative; top: 1px">
+                走失日期 :
+                <div class="text-end">@Html.DisplayFor(a => Model.MissingDate)</div>
+            </div>
+        </div>
+    </div>
+</div>
+

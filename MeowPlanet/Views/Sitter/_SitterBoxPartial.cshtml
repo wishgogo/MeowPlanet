@@ -1,0 +1,65 @@
+﻿
+<style>
+.nav-tabs {
+    border: 0px solid;
+}
+
+.nav-tabs .nav-link {
+    border-radius: 20px;
+}
+
+    .nav-tabs .nav-item.show .nav-link,
+    .nav-tabs .nav-link.active {
+        font-weight: bold;
+        font-size: 21px;
+        border-radius: 20px;
+        width: 200px;
+        background-color: rgb(255, 255, 255);
+        border: 2.5px rgb(255, 255, 255) solid;
+        color: #000000;
+    }
+
+.nav-link {
+    color: rgb(255, 255, 255);
+    width: 200px;
+    font-size: 21px;
+    border-radius: 20px;
+    border: 2.5px rgb(255, 255, 255) solid;
+}
+
+    .nav-link:focus,
+    .nav-link:hover {
+        color: #FFF;
+    }
+</style>
+
+<div class="div1">
+    <ul class="nav nav-tabs d-flex justify-content-center" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" type="button">
+                <i class="fa-solid fa-address-card"></i> &nbsp 基本資料
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" type="button">
+                <i class="fa-solid fa-briefcase"></i> &nbsp 工作管理
+            </button>
+        </li>
+    </ul>
+    <div id="sitterContent">
+        <partial name="_SitterViewModePartial" />
+    </div>
+</div>
+<script>
+     $('#home-tab').click(() => {
+        $.get('/Sitter/SitterViewMode', function(data) {
+            $('#sitterContent').html(data);
+        })
+    })
+
+    $('#profile-tab').click(() => {
+        $.get('/Sitter/SitterWorkManage', function(data) {
+            $('#sitterContent').html(data);
+        })
+    })
+</script>

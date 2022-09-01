@@ -1,0 +1,240 @@
+﻿@model MeowPlanet.Models.Sitter;
+@using System.Security.Claims;
+
+@{
+    ViewData["Title"] = "建立保姆";
+    Layout = null;
+}
+
+<link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+
+<link href="~/css/createsitter.css" rel="stylesheet" />
+
+<title>@ViewData["Title"] - 喵屋星球</title>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6 left-reg h-100 d-flex align-items-center">
+            <img class="img-logo" src="@Href("~/Images/LOGO2.png")" alt="">
+            <div class="div-left-p mx-5" id="p1">
+                <p>一起成為貓貓的守護者</p>
+            </div>
+
+            <div class="div-left-p mx-5" id="p2">
+                <p>請介紹一下您的服務名稱</p>
+            </div>
+
+            <div class="div-left-p mx-5" id="p3">
+                <p>請點選條件及填寫服務價格</p>
+            </div>
+
+            <div class="div-left-p mx-5" id="p4">
+                <p>是否供餐及同時照顧數量</p>
+            </div>
+
+            <div class="div-left-p mx-5" id="p5">
+                <p>請提供相關照片</p>
+            </div>
+
+            <div class="div-left-p mx-5" id="p6">
+                <p>最後請點選是否有以下設施</p>
+            </div>
+
+        </div>
+        <div class="col-6 right-reg h-100 d-flex justify-content-center align-items-center">
+
+            <div class="div-right-form text-center" id="f1">
+                <p>依簡單步驟輸入資訊</p>
+                <p>讓我們認識您的服務</p>
+                <button class="btn btn-light c-btn" id="f1-b1">馬上開始!</button>
+                <a class="btn btn-dark r-btn" asp-controller="Member" asp-action="Index">返回</a>
+            </div>
+
+            <form method="post" asp-action="AddSitter" asp-controller="Member" enctype='multipart/form-data' autocomplete="off" id="sitterform">
+
+                <input type="text" asp-for="IsService" class="d-none" value="true" />
+                <input type="text" asp-for="MemberId" class="d-none" value="@User.FindFirst(ClaimTypes.Sid).Value" id="memberid" />
+                <div class="div-right-form text-center" id="f2">
+                    <div class="d-flex align-items-center">
+                        <div class="w-100">
+                            <p class="text-start">服務名稱</p>
+                            <input type="text" asp-for="Name" class="text-center w-100" id="name-in" />
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center" style="height:40px; font-size:25px;">
+                        <span class="text-danger" id="name-err" style="margin-top:2px;"></span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="w-100">
+                            <p class="text-start">照顧地點</p>
+                            <input type="text" class="text-center w-100" id="address" onchange="getlatlng()" />
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center" style="height:40px; font-size:25px;">
+                        <span class="text-danger" id="address-err" style="margin-top:2px;"></span>
+                    </div>
+                    <input type="text" class="d-none" asp-for="PosLat" id="lat" />
+                    <input type="text" class="d-none" asp-for="PosLng" id="lng" />
+                    <input type="text" class="d-none" asp-for="FormattedAddress" id="formatted_address" />
+                    <input type="text" class="d-none" asp-for="Area1" id="area_1" />
+                    <input type="text" class="d-none" asp-for="Area2" id="area_2" />
+                    <input type="text" class="d-none" asp-for="Area3" id="area_3" />
+                    <div>
+                        <p class="text-start">保姆自介</p>
+                        <textarea type="text" asp-for="Summary" rows="5" cols="35" class="p-4" id="intro-in"></textarea>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center" style="height:40px; font-size:25px;">
+                        <span class="text-danger" id="intro-err" style="margin-top:2px;"></span>
+                    </div>
+
+                    <button type="button" class="btn btn-dark re-b" id="f2-b3">返回</button>
+                    <button type="button" class="btn btn-light ct-b" id="f2-b4">下一步</button>
+                </div>
+
+                <div class="div-right-form text-center" id="f3">
+
+                    <p class="text-start">證照</p>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-light con-b" id="licence-btn" value="無證照">有證照</button>
+                        <input type="text" asp-for="Licence" class="d-none" id="licence-in" value="無證照" />
+                    </div>
+                    <p class="text-start">籠子</p>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-light con-b" id="cage-btn" value="不關籠子">需關籠子</button>
+                        <input type="text" asp-for="Cage" class="d-none" id="cage-in" value="不關籠子" />
+                    </div>
+                    <p class="text-start">監視器</p>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-light con-b" id="monitor-btn" value="無監視器">有監視器</button>
+                        <input type="text" asp-for="Monitor" class="d-none" id="monitor-in" value="無監視器" />
+                    </div>
+
+                    <div class="w-100">
+                        <p class="text-start">服務價格</p>
+                        <div class="d-flex align-items-center">
+                            <input type="text" asp-for="Pay" class="text-center w-75" id="pay-in" />
+                            <p class="text-center my-0 mx-auto">每晚/元</p>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center" style="height:40px; font-size:25px;">
+                        <span class="text-danger" id="pay-err" style="margin-top:2px;"></span>
+                    </div>
+
+                    <button type="button" class="btn btn-dark re-b" id="f3-b1">返回</button>
+                    <button type="button" class="btn btn-light ct-b" id="f3-b2">下一步</button>
+
+                </div>
+
+                <div class="div-right-form text-center" id="f4">
+
+                    <p class="text-start">供餐</p>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-light con2-b" value="附一餐">附一餐</button>
+                        <button type="button" class="btn btn-light con2-b" value="附二餐">附二餐</button>
+                    </div>
+
+                    <div class="d-flex justify-content-between" style="margin-top:50px;">
+                        <button type="button" class="btn btn-light con2-b" value="附三餐">附三餐</button>
+                        <button type="button" class="btn btn-light con2-b" value="無附餐">無附餐</button>
+                    </div>
+
+                    <div class="d-flex justify-content-start align-items-center" style="height:40px; font-size:25px;">
+                        <span class="text-danger" id="meal-err" style="margin-top:2px;"></span>
+                    </div>
+
+                    <input type="text" asp-for="Meal" class="d-none" id="meal-in" />
+
+                    <p class="text-start">照顧數量</p>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-light con3-b" value="一對一">一對一</button>
+                        <button type="button" class="btn btn-light con3-b" value="一對二">一對二</button>
+
+                    </div>
+                    <div class="d-flex justify-content-between" style="margin-top:50px;">
+                        <button type="button" class="btn btn-light con3-b" value="一對三">一對三</button>
+                        <button type="button" class="btn btn-light con3-b" value="一對多">一對多</button>
+                    </div>
+
+                    <div class="d-flex justify-content-start align-items-center" style="height:40px; font-size:25px;">
+                        <span class="text-danger" id="num-err" style="margin-top:2px;"></span>
+                    </div>
+
+                    <input type="text" asp-for="CatNumber" class="d-none" id="num-in" />
+
+                    <button type="button" class="btn btn-dark re-b" id="f4-b1">返回</button>
+                    <button type="button" class="btn btn-light ct-b" id="f4-b2">下一步</button>
+                </div>
+
+                <div class="div-right-form text-center" id="f5">
+
+                    <div class="d-flex align-items-center ">
+                        <div id="dropZone1" class="dropZone" style="position: relative;">
+                            <img id="dropImg1" class="dropImg" />
+                            <p id="plus1">+</p>
+                            <input type="file" name="file1" multiple="multiple" style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;" id="theFile1" />
+                        </div>
+                        <div class="hint-d">
+                            <p>點擊圖框或拖曳加入</p>
+                        </div>
+
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div id="dropZone2" class="dropZone" style="position: relative;">
+                            <img id="dropImg2" class="dropImg" />
+                            <p id="plus2">+</p>
+                            <input type="file" name="file2" multiple="multiple" style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;" id="theFile2" />
+                        </div>
+                        <div id="dropZone3" class="dropZone" style="position: relative;">
+                            <img id="dropImg3" class="dropImg" />
+                            <p id="plus3">+</p>
+                            <input type="file" name="file3" multiple="multiple" style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;" id="theFile3" />
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div id="dropZone4" class="dropZone" style="position: relative;">
+                            <img id="dropImg4" class="dropImg" />
+                            <p id="plus4">+</p>
+                            <input type="file" name="file4" multiple="multiple" style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;" id="theFile4" />
+                        </div>
+                        <div id="dropZone5" class="dropZone" style="position: relative;">
+                            <img id="dropImg5" class="dropImg" />
+                            <p id="plus5">+</p>
+                            <input type="file" name="file5" multiple="multiple" style="opacity: 0.0; position: absolute; top:0; left: 0; bottom: 0; right:0; width: 100%; height:100%;" id="theFile5" />
+                        </div>
+                    </div>
+
+
+                    <button type="button" class="btn btn-dark re-b" id="f5-b1">返回</button>
+                    <button type="button" class="btn btn-light ct-b" id="f5-b2">下一步</button>
+                </div>
+
+                <div class="div-right-form text-center" id="f6">
+                    <div><button type="button" class="btn btn-light con4-b w-100" value="1">貓跳台</button></div>
+                    <div><button type="button" class="btn btn-light con4-b w-100" value="2">貓抓板</button></div>
+                    <div><button type="button" class="btn btn-light con4-b w-100" value="3">逗貓棒</button></div>
+                    <div><button type="button" class="btn btn-light con4-b w-100" value="4">貓屋子</button></div>
+
+                    <input type="text" class="d-none" id="feature" name="sitterfeature" />
+
+                    <button type="button" class="btn btn-dark re-b" id="f6-b1">返回</button>
+                    <button type="button" class="btn btn-light ct-b" id="f6-b2">完成</button>
+                </div>
+            </form>
+
+        </div>
+
+
+    </div>
+</div>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/js/createsitter.js"></script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtnea2CBLJCdjjhDcn_BmZkxVCN8I7wuI&libraries=geometry&callback=initMap">
+</script>
+
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+

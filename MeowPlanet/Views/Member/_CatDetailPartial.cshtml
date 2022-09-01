@@ -1,0 +1,621 @@
+﻿@model MeowPlanet.ViewModels.MemberInfo.CatDetailViewModel
+
+<style>
+    .cat-detail-select {
+        color: white;
+        padding: 0px;
+        font-size: 25px;
+        border: 2px rgb(219, 232, 248) solid;
+        box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+        background: rgba(0, 0, 0, .3);
+        border-radius: 40px;
+        text-align: center;
+    }
+
+        .cat-detail-select option {
+            color: white;
+            font-size: 25px;
+            padding: 0px;
+            background: rgba(0, 0, 0, .8);
+        }
+</style>
+
+<div class="d-flex justify-content-end" style="margin-right:70px;">
+    <button type="button" class="btn btn-backToList d-flex align-items-center justify-content-center" id="backToList"><i class="fa-solid fa-arrow-left"></i>&nbsp;返回列表</button>
+</div>
+<form method="post" asp-action="UpdateCat" asp-controller="Member" enctype='multipart/form-data' autocomplete="off">
+    <div class="row">
+        <input type="text" asp-for="CatId" class="d-none" value="@Model.CatId" id="catId" />
+
+        <div class="col-6">
+
+            <div class="d-flex justify-content-center" style="margin:10px;">
+                <div>
+
+                    <img src="@Model.Img01" style="width:380px;height:280px;border-radius:30px; object-fit:cover" id="imgPreview1" class="dropZone">
+                    <input id="imgInput1" type="file" class="d-none" name="file1" />
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center" style="margin:10px;">
+
+                <div style="position: relative;">
+
+                    <img src="@Model.Img02" style="width:180px;height:140px;border-radius:30px; object-fit:cover" id="imgPreview2" class="dropZone">
+                    <input id="imgInput2" type="file" class="d-none" name="file2" />
+                </div>
+                <div style="position: relative;">
+
+                    <img src="@Model.Img03" style="width:180px;height:140px;border-radius:30px; object-fit:cover" id="imgPreview3" class="dropZone">
+                    <input id="imgInput3" type="file" class="d-none" name="file3" />
+                </div>
+
+            </div>
+
+            <div class="d-flex justify-content-center" style="margin:10px;">
+
+                <div style="position: relative;">
+                    <img src="@Model.Img04" style="width:180px;height:140px;border-radius:30px; object-fit:cover" id="imgPreview4" class="dropZone">
+                    <input id="imgInput4" type="file" class="d-none" name="file4" />
+                </div>
+                <div style="position: relative;">
+
+                    <img src="@Model.Img05" style="width:180px;height:140px;border-radius:30px; object-fit:cover" id="imgPreview5" class="dropZone">
+                    <input id="imgInput5" type="file" class="d-none" name="file5" />
+                </div>
+
+            </div>
+
+            <div class="text-center">
+                <p style="font-size:25px; margin:0px;">可點擊或拖曳更換照片</p>
+            </div>
+
+            <div class="d-flex justify-content-center" style="margin-top:50px;">
+                <button type="submit" class="btn btn-light cat-detail-btn d-flex align-items-center justify-content-center" id="cat-update">修改資料</button>
+                <button type="button" class="btn btn-light cat-detail-btn d-flex align-items-center justify-content-center" id="cat-delete">刪除貓咪</button>
+            </div>
+
+        </div>
+        <div class="col-5">
+            <div class="my-3">
+                <p>名稱</p>
+                <input type="text" value="@Model.Name" asp-for="Name" />
+            </div>
+            <div class="my-3">
+                <p>品種</p>
+                <select class="form-select cat-detail-select" type="text" value="@Model.BreedId" asp-for="BreedId" id="breed">
+                    <option value="1">美國短毛貓</option>
+                    <option value="2">英國短毛貓</option>
+                    <option value="3">俄羅斯藍貓</option>
+                    <option value="4">布偶貓</option>
+                    <option value="5">曼赤肯</option>
+                    <option value="6">波斯貓</option>
+                    <option value="7">米克斯</option>
+                    <option value="8">其他</option>
+                </select>
+            </div>
+            <div class="my-3">
+                <p>性別</p>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-light mem-btn sex-btn" value="true" id="sex1">喵弟弟</button>
+                    <button type="button" class="btn btn-light mem-btn sex-btn" value="False" id="sex2">喵妹妹</button>
+                </div>
+                <input type="text" asp-for="Sex" class="d-none" id="sex-in" />
+            </div>
+            <div class="my-3">
+                <p>年齡</p>
+                <div class="d-flex align-items-center">
+                    <input type="text" value="@Model.Age" asp-for="Age" style="width:75%" />
+                    <span style="font-size:20px;" class="mx-auto">歲</span>
+                </div>
+            </div>
+            <div class="my-3">
+                <p>所在地</p>
+                <select class="form-select cat-detail-select" type="text" value="@Model.City" asp-for="City" id="city">
+                    <option>臺北市</option>
+                    <option>新北市</option>
+                    <option>基隆市</option>
+                    <option>新竹市</option>
+                    <option>桃園市</option>
+                    <option>新竹縣</option>
+                    <option>宜蘭縣</option>
+                    <option>臺中市</option>
+                    <option>苗栗縣</option>
+                    <option>彰化縣</option>
+                    <option>南投縣</option>
+                    <option>雲林縣</option>
+                    <option>高雄市</option>
+                    <option>臺南市</option>
+                    <option>嘉義市</option>
+                    <option>嘉義縣</option>
+                    <option>屏東縣</option>
+                </select>
+            </div>
+            <div class="my-3">
+                <p>介紹</p>
+                <textarea rows="4" type="text" asp-for="Introduce">@Model.Introduce</textarea>
+            </div>
+            <div class="my-3">
+                <p>可否領養</p>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-light mem-btn ad-btn" value="true" id="ad1">待領貓咪</button>
+                    <button type="button" class="btn btn-light mem-btn ad-btn" value="False" id="ad2">專屬貓咪</button>
+                </div>
+                <input type="text" asp-for="IsAdoptable" class="d-none" id="ad-in" />
+            </div>
+            <div class="my-3">
+                <p>保姆狀態</p>
+                <div class="d-flex justify-content-between">
+                    <input type="text" asp-for="IsSitting" id="sit-in" disabled />
+                </div>
+
+            </div>
+            <div class="my-3">
+                <p>是否走失</p>
+                <div class="d-flex justify-content-between">
+                    <input type="text" asp-for="IsMissing" id="mis-in" disabled />
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script>
+    var breed = '@Model.Breed';
+    var sex = '@Model.Sex';
+    var adoptable = '@Model.IsAdoptable';
+    var sitting = '@Model.IsSitting';
+    var missing = '@Model.IsMissing';
+    var img1 = '@Model.Img01';
+    var img2 = '@Model.Img02';
+    var img3 = '@Model.Img03';
+    var img4 = '@Model.Img04';
+    var img5 = '@Model.Img05';
+
+    $(function() {
+
+        if ((missing == "True") || (sitting == "True")) {
+            $('#ad1').attr("disabled", true);
+            $('#ad2').attr("disabled", true);
+            if (adoptable == "True") {
+                $('#ad1').css('opacity', '1')
+                $('#ad2').css('opacity', '0.2')
+            } else {
+                $('#ad1').css('opacity', '0.2')
+                $('#ad2').css('opacity', '1')
+            }
+        }
+
+        if (sex == "True") {
+            $('#sex1').addClass('active');
+        } else {
+            $('#sex2').addClass('active');
+        }
+
+        if (adoptable == "True") {
+            $('#ad1').addClass('active')
+        } else {
+            $('#ad2').addClass('active');
+        }
+
+        if (sitting == "True") {
+            $('#sit-in').attr('value', '被照顧中');
+        } else {
+            $('#sit-in').attr('value', '非照顧中');
+        }
+
+        if (missing == "True") {
+            $('#mis-in').attr('value', '走失中');
+        } else {
+            $('#mis-in').attr('value', '無走失');
+        }
+
+        if (img1 == '') {
+            $('#imgPreview1').attr('src', '/images/addphoto.png')
+        }
+        if (img2 == '') {
+            $('#imgPreview2').attr('src', '/images/addphoto.png')
+        }
+        if (img3 == '') {
+            $('#imgPreview3').attr('src', '/images/addphoto.png')
+        }
+        if (img4 == '') {
+            $('#imgPreview4').attr('src', '/images/addphoto.png')
+        }
+        if (img5 == '') {
+            $('#imgPreview5').attr('src', '/images/addphoto.png')
+        }
+
+    })
+
+    $('.sex-btn').click(function() {
+        $('.sex-btn').removeClass('active');
+        $(this).addClass('active');
+
+        $('#sex-in').attr('value', this.value);
+    })
+    $('.ad-btn').click(function() {
+        $('.ad-btn').removeClass('active');
+        $(this).addClass('active');
+
+        $('#ad-in').attr('value', this.value);
+    })
+    $('.sit-btn').click(function() {
+        $('.sit-btn').removeClass('active');
+        $(this).addClass('active');
+
+        $('#sit-in').attr('value', this.value);
+    })
+    $('.mis-btn').click(function() {
+        $('.mis-btn').removeClass('active');
+        $(this).addClass('active');
+
+        $('#mis-in').attr('value', this.value);
+    })
+
+
+    //img01
+    $(document).on({
+        'click': () => $('#imgInput1').trigger("click"),
+        'dragover': (event) => event.preventDefault(),
+        'drop': (event) => {
+
+            event.preventDefault();
+
+            let file = event.originalEvent.dataTransfer.files[0];
+
+            if (file.type.indexOf('image') == -1) {
+
+                Swal.fire({
+                    heightAuto: false,
+                    position: 'center',
+                    title: '請上傳正確的圖片格式',
+                    icon: 'warning',
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+
+                return
+            }
+
+            let reader = new FileReader()
+
+            reader.readAsDataURL(file);
+            reader.onload = function(e) {
+                $('#imgPreview1').attr('src', e.target.result)
+            }
+
+            let dt = new DataTransfer();
+            dt.items.add(file);
+            $('#imgInput1')[0].files = dt.files
+        }
+    }, '#imgPreview1')
+
+    $(document).on('change', '#imgInput1', function() {
+
+        if ($(this)[0].files[0].type.indexOf('image') == -1) {
+
+            $(this).val('');
+
+            Swal.fire({
+                heightAuto: false,
+                position: 'center',
+                title: '請上傳正確的圖片格式',
+                icon: 'warning',
+                showConfirmButton: false,
+                timer: 2000
+            })
+
+            return
+        }
+
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            $('#imgPreview1').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL($('#imgInput1')[0].files[0])
+    })
+
+    //img02
+    $(document).on({
+        'click': () => $('#imgInput2').trigger("click"),
+        'dragover': (event) => event.preventDefault(),
+        'drop': (event) => {
+
+            event.preventDefault();
+
+            let file = event.originalEvent.dataTransfer.files[0];
+
+            if (file.type.indexOf('image') == -1) {
+
+                Swal.fire({
+                    heightAuto: false,
+                    position: 'center',
+                    title: '請上傳正確的圖片格式',
+                    icon: 'warning',
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+
+                return
+            }
+
+            let reader = new FileReader()
+
+            reader.readAsDataURL(file);
+            reader.onload = function(e) {
+                $('#imgPreview2').attr('src', e.target.result)
+            }
+
+            let dt = new DataTransfer();
+            dt.items.add(file);
+            $('#imgInput2')[0].files = dt.files;
+            $('#plus2').css('display', 'none');
+        }
+    }, '#imgPreview2')
+
+    $(document).on('change', '#imgInput2', function() {
+
+        if ($(this)[0].files[0].type.indexOf('image') == -1) {
+
+            $(this).val('');
+
+            Swal.fire({
+                heightAuto: false,
+                position: 'center',
+                title: '請上傳正確的圖片格式',
+                icon: 'warning',
+                showConfirmButton: false,
+                timer: 2000
+            })
+
+            return
+        }
+
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            $('#imgPreview2').attr('src', e.target.result);
+        }
+        $('#plus2').css('display', 'none');
+        reader.readAsDataURL($('#imgInput2')[0].files[0])
+    })
+
+    //img03
+    $(document).on({
+        'click': () => $('#imgInput3').trigger("click"),
+        'dragover': (event) => event.preventDefault(),
+        'drop': (event) => {
+
+            event.preventDefault();
+
+            let file = event.originalEvent.dataTransfer.files[0];
+
+            if (file.type.indexOf('image') == -1) {
+
+                Swal.fire({
+                    heightAuto: false,
+                    position: 'center',
+                    title: '請上傳正確的圖片格式',
+                    icon: 'warning',
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+
+                return
+            }
+
+            let reader = new FileReader()
+
+            reader.readAsDataURL(file);
+            reader.onload = function(e) {
+                $('#imgPreview3').attr('src', e.target.result)
+            }
+
+            let dt = new DataTransfer();
+            dt.items.add(file);
+            $('#imgInput3')[0].files = dt.files
+        }
+    }, '#imgPreview3')
+
+    $(document).on('change', '#imgInput3', function() {
+
+        if ($(this)[0].files[0].type.indexOf('image') == -1) {
+
+            $(this).val('');
+
+            Swal.fire({
+                heightAuto: false,
+                position: 'center',
+                title: '請上傳正確的圖片格式',
+                icon: 'warning',
+                showConfirmButton: false,
+                timer: 2000
+            })
+
+            return
+        }
+
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            $('#imgPreview3').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL($('#imgInput3')[0].files[0])
+    })
+
+    //img04
+    $(document).on({
+        'click': () => $('#imgInput4').trigger("click"),
+        'dragover': (event) => event.preventDefault(),
+        'drop': (event) => {
+
+            event.preventDefault();
+
+            let file = event.originalEvent.dataTransfer.files[0];
+
+            if (file.type.indexOf('image') == -1) {
+
+                Swal.fire({
+                    heightAuto: false,
+                    position: 'center',
+                    title: '請上傳正確的圖片格式',
+                    icon: 'warning',
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+
+                return
+            }
+
+            let reader = new FileReader()
+
+            reader.readAsDataURL(file);
+            reader.onload = function(e) {
+                $('#imgPreview4').attr('src', e.target.result)
+            }
+
+            let dt = new DataTransfer();
+            dt.items.add(file);
+            $('#imgInput4')[0].files = dt.files
+        }
+    }, '#imgPreview4')
+
+    $(document).on('change', '#imgInput4', function() {
+
+        if ($(this)[0].files[0].type.indexOf('image') == -1) {
+
+            $(this).val('');
+
+            Swal.fire({
+                heightAuto: false,
+                position: 'center',
+                title: '請上傳正確的圖片格式',
+                icon: 'warning',
+                showConfirmButton: false,
+                timer: 2000
+            })
+
+            return
+        }
+
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            $('#imgPreview4').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL($('#imgInput4')[0].files[0])
+    })
+
+    //img05
+    $(document).on({
+        'click': () => $('#imgInput5').trigger("click"),
+        'dragover': (event) => event.preventDefault(),
+        'drop': (event) => {
+
+            event.preventDefault();
+
+            let file = event.originalEvent.dataTransfer.files[0];
+
+            if (file.type.indexOf('image') == -1) {
+
+                Swal.fire({
+                    heightAuto: false,
+                    position: 'center',
+                    title: '請上傳正確的圖片格式',
+                    icon: 'warning',
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+
+                return
+            }
+
+            let reader = new FileReader()
+
+            reader.readAsDataURL(file);
+            reader.onload = function(e) {
+                $('#imgPreview5').attr('src', e.target.result)
+            }
+
+            let dt = new DataTransfer();
+            dt.items.add(file);
+            $('#imgInput5')[0].files = dt.files
+        }
+    }, '#imgPreview5')
+
+    $(document).on('change', '#imgInput5', function() {
+
+        if ($(this)[0].files[0].type.indexOf('image') == -1) {
+
+            $(this).val('');
+
+            Swal.fire({
+                heightAuto: false,
+                position: 'center',
+                title: '請上傳正確的圖片格式',
+                icon: 'warning',
+                showConfirmButton: false,
+                timer: 2000
+            })
+
+            return
+        }
+
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            $('#imgPreview5').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL($('#imgInput5')[0].files[0])
+    })
+
+    // 修改貓咪資料
+    $('#cat-update').click(function(e) {
+        Swal.fire({
+            heightAuto: false,
+            position: 'center',
+            icon: 'success',
+            title: '修改完成',
+            showConfirmButton: false,
+            timer: 2500
+        }).then(function() {
+            window.location.href = "/Member/Index";
+        })
+
+    })
+
+    // 刪除貓咪
+    $('#cat-delete').click(function() {
+
+        Swal.fire({
+            title: "確認要刪除貓貓嗎？",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#B99668',
+            cancelButtonColor: '#4B5461',
+            confirmButtonText: '刪除'
+        }).then(function(result) {
+            if (result.value) {
+                $.get('/Member/DeleteCat', { CatId: $('#catId').val() }, function(data) {
+                    Swal.fire({
+                        heightAuto: false,
+                        position: 'center',
+                        icon: 'success',
+                        title: '貓貓已刪除',
+                        showConfirmButton: false,
+                        timer: 2500
+                    }).then(function() {
+                        window.location.href = "/Member/Index";
+                    })
+                })
+            }
+        })
+
+
+
+    })
+
+</script>

@@ -1,0 +1,26 @@
+﻿@model IEnumerable<MeowPlanet.ViewModels.MemberInfo.CatSelectViewModel>
+
+
+
+@foreach (var item in Model)
+{
+    
+    string sex = item.Sex == true ? "喵弟弟" : "喵妹妹";
+    
+
+    <div data-id="@item.CatId"class="cat-select d-flex align-items-center px-4" style="cursor:pointer;" onclick="ToDetail(this.dataset.id)">
+        <div style="width:60%;height:90%;">
+
+            <img src="@item.Img01"  style="border-radius:30px; object-fit:cover; box-shadow: 0 0 3rem rgb(134 171 190 / 50%) inset;width:100%;height:100%;" >
+        </div>
+
+        <div class="text-center d-flex flex-column align-items-center justify-content-center" style="width:219px;height:110px;">
+            <p style="font-size:18px">@item.Name</p>
+            <p style="font-size:18px">@item.Breed</p>
+            <p style="font-size:18px">@sex</p>
+        </div>
+    </div>
+
+}
+
+

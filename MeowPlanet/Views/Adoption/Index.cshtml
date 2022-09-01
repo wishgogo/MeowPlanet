@@ -1,0 +1,315 @@
+﻿@model IEnumerable<MeowPlanet.ViewModels.Adopts.CatsDto>
+@using System.Security.Claims;
+
+@{
+    bool isLogin = Int32.TryParse(User.Claims.Where(x => x.Type == ClaimTypes.Sid).Select(x => x.Value).FirstOrDefault(), out int memberId);
+}
+
+@{
+    ViewData["Title"] = "貓咪想家";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<link href="~/lib/bootstrap/dist/css/animista.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="~/css/adoption.css" rel="stylesheet" />
+<link href="~/css/stars.css" rel="stylesheet" />
+
+
+
+<div id="all">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
+    <div id="stars4"></div>
+    <div class="container1">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-outline-secondary select" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+            <img src="@Href("~/images/adopselect.png")" style="width:80px;border-radius:50%;" />
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="margin:auto">
+                        <h5 class="modal-title" id="exampleModalLongTitle">請選擇喜歡的貓貓類型</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <label for="inputState">品種</label>
+                            <select id="inputState" class="form-select">
+                                <option selected value=0>全部</option>
+                                @foreach (var item in ViewBag.CatBreeds)
+                                {
+                                    <option value=@item.BreedId>@item.Name</option>
+                                }
+                            </select>
+                            <br>
+                            <label for="inputState">性別</label>
+                            <br />
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value=null checked>
+                                <label class="form-check-label" for="inlineRadio1">全部</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value=true>
+                                <label class="form-check-label" for="inlineRadio2">公</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value=false>
+                                <label class="form-check-label" for="inlineRadio3">母</label>
+                            </div>
+
+
+                            <br>
+                            <br>
+
+                            <br>
+
+                            <label for="inputState">地點</label>
+                            <div class="form-row">
+                                <div class="form-group col-4">
+                                    <select id="city" class="form-select">
+                                        <option selected>全部</option>
+                                        <option>臺北市</option>
+                                        <option>新北市</option>
+                                        <option>基隆市</option>
+                                        <option>新竹市</option>
+                                        <option>桃園市</option>
+                                        <option>新竹縣</option>
+                                        <option>宜蘭縣</option>
+                                        <option>臺中市</option>
+                                        <option>苗栗縣</option>
+                                        <option>彰化縣</option>
+                                        <option>南投縣</option>
+                                        <option>雲林縣</option>
+                                        <option>高雄市</option>
+                                        <option>臺南市</option>
+                                        <option>嘉義市</option>
+                                        <option>嘉義縣</option>
+                                        <option>屏東縣</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        <button type="button" id="search" class="btn btn-primary" data-bs-dismiss="modal">確認</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bounce-in-top">
+            <div class="box2">
+                <i class="fa-solid fa-paw"></i>
+            </div>
+            <div class="box3">
+                <i class="fa-solid fa-paw"></i>
+            </div>
+            <div class="box4">
+                <i class="fa-solid fa-paw"></i>
+            </div>
+            <div class="box5">
+                <i class="fa-solid fa-paw"></i>
+            </div>
+            <div class="cardbox">
+                <div class="box1 bounce-in-top2">
+                    @foreach (var item in Model)
+                    {
+                        <div class="autoplay col-12">
+                            @if (@item.CatImg1 != null)
+                            {
+                                <div class="slide-1"><img src="@Url.Content(@item.CatImg1)"></div>
+                            }
+                            @if (@item.CatImg2 != null)
+                            {
+                                <div class="slide-2"><img src="@Url.Content(@item.CatImg2)"></div>
+                            }
+                            @if (@item.CatImg3 != null)
+                            {
+                                <div class="slide-3"><img src="@Url.Content(@item.CatImg3)"></div>
+                            }
+                            @if (@item.CatImg4 != null)
+                            {
+                                <div class="slide-4"><img src="@Url.Content(@item.CatImg4)"></div>
+                            }
+                            @if (@item.CatImg5 != null)
+                            {
+                                <div class="slide-5"><img src="@Url.Content(@item.CatImg5)"></div>
+                            }
+
+                        </div>
+
+                        <div class="context trun front col-12">
+                            <div class="title">@item.CatName</div>
+                            <div class="a1">
+                                <span>@item.BreedName</span>
+                                @if (@item.CatSex == false)
+                                {
+                                    <i class="fa-solid fa-venus" style="color:#FF8EFF;font-size:1.3rem"></i>
+                                }
+                                else if (@item.CatSex == true)
+                                {
+                                    <i class="fa-solid fa-mars" style="color:#99b8d4;font-size:1.3rem"></i>
+                                }
+                                <p class="age">@item.CatAge 歲</p>
+                                <p>@item.CatCity </p>
+                                <p class="introduce">@item.CatIntroduce </p>
+                            </div>
+                        </div>
+
+                        <div class="like" style="text-align:center; ">
+                            <button id="like" onclick='checklike()' type="button" class="btn btn-outline-danger buzz-pri pulsate-bck">
+                                <svg xmlns="http://www.w3.org/2000/svg" style="padding-bottom:3px;" width="18" height="18" fill="currentColor" class="bi bi-heart-fill " viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                                </svg> 認養
+                            </button>
+                            <button id="pass" type="button" class="btn btn-outline-secondary buzz">PASS</button>
+                        </div>
+                        break;
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.1.9/sweetalert2.all.min.js"
+        integrity="sha512-IZ95TbsPTDl3eT5GwqTJH/14xZ2feLEGJRbII6bRKtE/HC6x3N4cHye7yyikadgAsuiddCY2+6gMntpVHL1gHw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    //nav-item效果
+    $('.nav-item a').eq(1).addClass('nav-item-active');
+
+    //---------------------Start Event-------------------------------------
+    var isLogin = '@isLogin';
+    var memberId = '@memberId';
+    //pass事件
+    $('#pass').click(function() {
+
+        //回傳PartialView
+        $.get("@Url.Action("Next", "Adoption")", function(data) {
+            $(".cardbox").empty();
+            $('.cardbox').html(data);
+        })
+    })
+
+    //search事件
+    $('#search').click(function() {
+        var breedId = $("#inputState").val();
+        var catSex = document.querySelector('input[name="inlineRadioOptions"]:checked').value;
+        var catCity = $("#city").val();
+
+        //傳送資料到後端,回傳PartialView
+        $.get("@Url.Action("Search", "Adoption")" + "?city_Utf8=" + escape(catCity) + "&breedId=" + escape(breedId) + "&catSex=" + escape(catSex), function(data) {
+            if (data == null) {
+                Swal.fire({
+                    heightAuto: false,
+                    position: 'center',
+                    title: '無此貓貓',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            } else {
+                $(".cardbox").empty();
+                $('.cardbox').html(data);
+            }
+        })
+    })
+
+    //輪播事件
+    $('.autoplay').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2000,
+    });
+
+
+    //---------------------End Event-------------------------------------
+
+
+    //---------------------Start Function-------------------------------------
+
+    //like事件
+    function checklike() {
+        checkLogin(() => {
+            Swal.fire({
+                title: "確認要領養貓貓嗎？",
+                text: "確認申請領養後不可取消，請慎重考慮！",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#B99668',
+                cancelButtonColor: '#4B5461',
+                confirmButtonText: '申請'
+            }).then(function(result) {
+                if (result.value) {
+                    Swal.fire(
+                        '已申請領養！',
+                        '請等候貓貓主人確認申請',
+                        'success'
+                    ).then(function(result) {
+                        $.ajax({
+                            method: 'post',
+                            url: '/Adoption/Like',
+                            data: { catid: @ViewBag.catid},
+                            dataType: 'json',
+                            success: function(data) {
+                                window.location.reload();
+                            },
+                            error: function() {
+                                window.location.reload();
+                            }
+                        });
+                    }
+                    )
+                }
+            })
+        })
+
+
+    }
+
+
+    //檢查登入
+    function checkLogin(action) {
+
+        if (isLogin == "False") {
+            Swal.fire({
+                title: '請登入會員以執行此操作',
+                text: '是否要前往登入頁面?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: '前往登入',
+                cancelButtonText: '下次一定',
+                heightAuto: false,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/Login";
+                }
+                else {
+                    return false
+                }
+            })
+        }
+        else {
+            action();
+        }
+    }
+
+         //---------------------End Function-------------------------------------
+
+</script>
+

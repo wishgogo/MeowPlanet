@@ -1,0 +1,688 @@
+﻿@model MeowPlanet.ViewModels.Sitters.SitterViewModels;
+@using System.Text.Json;
+@using System.Text.Json.Serialization;
+<style>
+    /* 開關鈕 */
+.switch {
+    /*==設定開關鈕的長寬==*/
+    position: relative;
+    width: 65px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.switch-checkbox {
+    position: absolute;
+    display: none;
+}
+
+.switch-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.switch-txt {
+    display: block;
+    width: 200%;
+    margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+
+    .switch-txt::before,
+    .switch-txt::after {
+        display: block;
+        float: right;
+        width: 50%;
+        font-size: 13px;
+        color: #fff;
+        font-weight: bold;
+        box-sizing: border-box;
+    }
+
+    /*==開關鈕底色(開啟時)==*/
+    .switch-txt::after {
+        content: attr(turnOn);
+        padding-left: 10px;
+        background: #1ba0ef;
+        color: #fff;
+    }
+
+    /*開關鈕底色(關閉時)*/
+    .switch-txt::before {
+        content: attr(turnOff);
+        padding-right: 10px;
+        background: #eee;
+        color: #ccc;
+        text-align: right;
+    }
+
+/*==開關鈕的顏色與大小==*/
+.switch-Round-btn {
+    position: absolute;
+    display: block;
+    width: 26px;
+    height: 26px;
+    margin: 2px;
+    background: #fff;
+    top: 0;
+    bottom: 0;
+    right: 35px;
+    border-radius: 13px;
+    transition: all 0.3s ease-in 0s;
+}
+
+.switch-checkbox:checked + .switch-label .switch-txt {
+    margin-left: 0;
+}
+
+.switch-checkbox:checked + .switch-label .switch-Round-btn {
+    right: 0;
+}
+/*---------------------*/
+/*網頁內容*/
+.div0 {
+    display: flex;
+}
+
+.div0-1 {
+    margin-left: 20px;
+}
+
+.div0-2 {
+    display: flex;
+    margin-top: 20px;
+}
+
+.div0-3 {
+    width: 600px;
+    height: 40px;
+    margin-left: 20px;
+    color: #FFF;
+    padding: 1rem;
+    border: 2px rgb(219, 232, 248) solid;
+    box-shadow: 0 0 0.5rem rgb(134 171 190 / 50%) inset;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 20px;
+}
+
+.div0-4 {
+    width: 150px;
+    height: 35px;
+    margin-left: 20px;
+    text-align: center;
+    /* 太空感  */
+    color: rgb(255, 255, 255);
+    border: 2px rgb(219, 232, 248) solid;
+    box-shadow: 0 0 0.5rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 10px;
+    /* but轉成DIV特性 */
+    display: block;
+}
+
+    .div0-4:hover {
+        box-shadow: 0 0 2rem rgba(134, 171, 190, 0.5) inset;
+    }
+
+.div0-4-1 {
+    color: #000;
+    background: #FFF;
+}
+
+
+.div0-5 {
+    margin-left: 15px;
+    margin-top: 10px;
+}
+
+.div1 {
+    height: 660px;
+    color: rgb(134, 171, 190, 0.5);
+    padding: 1rem;
+}
+
+.div2-1 {
+    width: 320px;
+    height: 50px;
+    font-size: 15px;
+    margin-top: 1px;
+    line-height: 5px;
+    font-weight: 900;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    border: 2.5px rgba(0, 150, 209, 0.829) solid;
+    padding: 1rem;
+    box-shadow: 0 0 0.7rem rgba(0, 150, 209, 0.829) inset;
+    background: rgba(0, 0, 0, .3);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.div3 {
+    width: 900px;
+    height: 590px;
+    margin: 0 auto;
+    padding: 20px;
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+}
+
+/* 拖拉圖片 */
+.dropZone-1 {
+    padding: 10px;
+    border: 2px rgb(115, 244, 222) dashed;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 20px;
+    width: 158px;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+    .dropZone:hover {
+        background: rgba(0, 0, 0, .7);
+    }
+
+.dropImg {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 10px;
+}
+
+.img-input {
+    opacity:0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.div-right-form .hint-d p {
+    font-size: 20px;
+    margin: 0;
+}
+
+.in-sp {
+    position: absolute;
+    bottom: 1%;
+    right: 25%;
+    transform: translateX(50%);
+    color: #2A483A;
+}
+
+.b-press {
+    color: black;
+    background-color: white;
+}
+
+.div5 {
+    width: 660px;
+    height: 150px;
+    margin-left: 20px;
+    line-height: 30px;
+    font-size: 20px;
+    padding: 1rem;
+    border: 2px rgb(219, 232, 248) solid;
+    box-shadow: 0 0 1rem rgb(134 171 190 / 50%) inset;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 10px;
+    resize: none;
+    color: #fff;
+}
+
+.div6-1 {
+    width: 180px;
+    height: 45px;
+    font-size: 15px;
+    margin: 10px 0px 10px 240px;
+    border-radius: 10px;
+    line-height: 5px;
+    font-weight: 800;
+    color: rgb(255, 255, 255);
+    padding: 1rem;
+    border: 2px rgb(142, 255, 212, 0.767) solid;
+    box-shadow: 0 0 0.5rem rgba(142, 255, 212, 0.767) inset;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 20px;
+    /* but轉成DIV特性 */
+    display: block;
+}
+
+.div6-2 {
+    width: 180px;
+    height: 45px;
+    font-size: 15px;
+    margin: 10px 0px 10px 45px;
+    border-radius: 10px;
+    line-height: 5px;
+    font-weight: 800;
+    color: rgb(255, 255, 255);
+    padding: 1rem;
+    border: 2px rgba(0, 150, 209, 0.829) solid;
+    box-shadow: 0 0 0.5rem rgba(0, 150, 209, 0.829) inset;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 20px;
+    /* but轉成DIV特性 */
+    display: block;
+}
+
+</style>
+    <div style="overflow-y: auto;">
+        <div id="accordionExample" class="div3">
+            <!-- 開關鈕 -->
+            <form method="post" id="saveSitterForm" enctype='multipart/form-data' autocomplete="off">
+            <div class="div0">
+                <div style="margin-right: 20px;">服務模式:</div>
+                <div class="switch">
+                    @*checked = 營業*@
+                    @if(Model.sitter.IsService == true)
+                    {
+                        <input class="switch-checkbox" id="switchID1" type="checkbox"  checked asp-for="sitter.IsService">
+                    }
+                    else
+                    {
+                        <input class="switch-checkbox" id="switchID1" type="checkbox" asp-for="sitter.IsService">
+                    }
+                    <label class="switch-label" for="switchID1">
+                        <span class="switch-txt" turnOn="營業" turnOff="休息"></span>
+                        <span class=" switch-Round-btn"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="div0-2">
+                <div class="div-right-form text-center" id="f7">
+                    <div class="d-flex align-items-center">
+                        <div id="dropZone1" class="dropZone-1" style="position: relative;">
+                            <img id="dropImg1" class="dropImg" src="@Model.sitter.Img01"/>
+                            @if(Model.sitter.Img01 == null){
+                                <p id="plus1">
+                                    <i class="fa-solid fa-plus"></i>
+                                </p>
+                            }
+                            <input type="file" name="file1" class="img-input" id="theFile1" />
+                        </div>
+                        <div id="dropZone2" class="dropZone-1 div0-1" style="position: relative;">
+                            <img id="dropImg2" class="dropImg" src="@Model.sitter.Img02"/>
+                            @if(Model.sitter.Img02 == null){
+                                <p id="plus2">
+                                    <i class="fa-solid fa-plus"></i>
+                                </p>
+                            }
+                            <input type="file" name="file2" class="img-input" id="theFile2" />
+                        </div>
+                        <div id="dropZone3" class="dropZone-1 div0-1" style="position: relative;">
+                            <img id="dropImg3" class="dropImg" src="@Model.sitter.Img03"/>
+                            @if(Model.sitter.Img03 == null){
+                                <p id="plus3">
+                                    <i class="fa-solid fa-plus"></i>
+                                </p>
+                            }
+                            <input type="file" name="file3" class="img-input" id="theFile3" />
+                        </div>
+                        <div id="dropZone4" class="dropZone-1 div0-1" style="position: relative;">
+                            <img id="dropImg4" class="dropImg" src="@Model.sitter.Img04"/>
+                            @if(Model.sitter.Img04 == null){
+                                <p id="plus4">
+                                    <i class="fa-solid fa-plus"></i>
+                                </p>
+                            }
+                            <input type="file" name="file4" class="img-input" id="theFile4" />
+                        </div>
+                        <div id="dropZone5" class="dropZone-1 div0-1" style="position: relative;">
+                            <img id="dropImg5" class="dropImg" src="@Model.sitter.Img05"/>
+                            @if(Model.sitter.Img05 == null){
+                                <p id="plus5">
+                                    <i class="fa-solid fa-plus"></i>
+                                </p>
+                            }
+                            <input type="file" name="file5" class="img-input" id="theFile5" />
+                        </div>
+                    </div>
+                    <div class="hint-d">
+                        <p>《更換場域照片，請以點擊圖框或拖曳放式更換》</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="div0-2">
+                <div style=" margin-top: 5px;">服務名稱:</div>
+                <div>
+                    <input class="div0-3"  value="@Model.sitter.Name" asp-for="sitter.Name"/>
+                </div>
+            </div>
+            <div class="div0-2">
+                <div>服務位置:</div>
+                <div>
+                    <input class="div0-3" id="address" value="@Model.sitter.FormattedAddress" onchange="getlatlng()"/>
+                </div>
+                <input type="text" class="d-none" asp-for="sitter.PosLat" id="lat" />
+                <input type="text" class="d-none" asp-for="sitter.PosLng" id="lng" />
+                <input type="text" class="d-none" asp-for="sitter.FormattedAddress" id="formatted_address" />
+                <input type="text" class="d-none" asp-for="sitter.Area1" id="area_1" />
+                <input type="text" class="d-none" asp-for="sitter.Area2" id="area_2" />
+                <input type="text" class="d-none" asp-for="sitter.Area3" id="area_3" />
+            </div>
+
+            <div class="div0-2">
+                <div> 每日費用:</div>
+                <div>
+                    <input class="div0-4"  value="@Model.sitter.Pay" asp-for="sitter.Pay"/>
+                </div>
+            </div>
+
+            <div class="div0-2" id="equip">
+                <div>保姆細項:</div>
+                <button type="button" class="div0-4">持有證照</button>
+                <button type="button" class="div0-4">無須住籠</button>
+                <button type="button" class="div0-4">附監視器</button>
+                <input type="hidden" value="@Model.sitter.Licence" asp-for="sitter.Licence"/>
+                <input type="hidden" value="@Model.sitter.Cage" asp-for="sitter.Cage"/>
+                <input type="hidden" value="@Model.sitter.Monitor" asp-for="sitter.Monitor"/>
+                <div class="div0-5">(複選)</div>
+            </div>
+            <div class="div0-2" id="catFeature">
+                <div >娛樂設施:</div>
+                <input type="checkbox" name="check" class="switch-checkbox" value="1" id="貓跳台" /><label class="div0-4" for="貓跳台">貓跳台</label>
+                <input type="checkbox" name="check" class="switch-checkbox" value="2" id="貓抓板" /><label class="div0-4" for="貓抓板">貓抓板</label>
+                <input type="checkbox" name="check" class="switch-checkbox" value="3" id="逗貓棒" /><label class="div0-4" for="逗貓棒">逗貓棒</label>
+                <input type="checkbox" name="check" class="switch-checkbox" value="4" id="貓屋子" /><label class="div0-4" for="貓屋子">貓屋子</label>
+                <div class="div0-5">(複選)</div>
+            </div>
+            <div class="div0-2" id="catNumber">
+                <div >照顧數量:</div>
+                <button type="button" class="div0-4">一對一</button>
+                <button type="button" class="div0-4">一對二</button>
+                <button type="button" class="div0-4">一對三</button>
+                <button type="button" class="div0-4">一對多</button>
+                <div class="div0-5">(單選)</div>
+                <input type="hidden" value="@Model.sitter.CatNumber" asp-for="sitter.CatNumber"/>
+            </div>
+            <div class="div0-2" id="catMeal">
+                <div >每日附餐:</div>
+                <button type="button" class="div0-4">無附餐</button>
+                <button type="button" class="div0-4">附一餐</button>
+                <button type="button" class="div0-4">附二餐</button>
+                <button type="button" class="div0-4">附三餐</button>
+                <div class="div0-5">(單選)</div>
+                <input type="hidden" value="@Model.sitter.Meal" asp-for="sitter.Meal"/>
+            </div>
+            <div class="div0-2">
+                <div style=" margin-top: 5px;">保姆自介:</div>
+                <div>
+                    <textarea class="div5" asp-for="sitter.Summary">@Model.sitter.Summary</textarea>
+                </div>
+            </div>
+            <div class="div0-2">
+                <div>
+                    <button id="save" type="button" class="div6-1">儲存</button>
+                </div>
+                <div>
+                    <button type="button" id="cancel" class="div6-2">返回</button>
+                </div>
+            </div>
+            </form>
+
+        </div>
+    </div>
+<script>
+{
+    let m = @Html.Raw(JsonSerializer.Serialize(Model));
+
+    //比對資料庫顯示在畫面
+    $(function() {
+        if (m.sitter.Licence == "有證照") {
+            $('#equip button').eq(0).addClass('div0-4-1');
+        }
+        if (m.sitter.Cage == "不關籠子") {
+            $('#equip button').eq(1).addClass('div0-4-1');
+        }
+        if (m.sitter.Monitor == "有監視器") {
+            $('#equip button').eq(2).addClass('div0-4-1');
+        }
+        for (let i = 0; i < 4; i++) {
+            for (let j = 0; j < 4; j++) {
+                if (m.sitterfeatureList[j] == $('#catFeature label').eq(i).text()) {
+                    $('#catFeature label').eq(i).addClass('div0-4-1');
+                    $("#catFeature input").eq(i).prop("checked", true);
+                }
+            }
+        }
+        for (let i = 0; i < 4; i++) {
+            if (m.sitter.CatNumber == $('#catNumber button').eq(i).text()) {
+                $('#catNumber button').eq(i).addClass('div0-4-1');
+            }
+        }
+        for (let i = 0; i < 4; i++) {
+            if (m.sitter.Meal == $('#catMeal button').eq(i).text()) {
+                $('#catMeal button').eq(i).addClass('div0-4-1');
+            }
+        }
+    })
+
+    // 地址轉經緯度及完整地址及部分地址
+    var geocoder;
+
+    function initMap() {
+        geocoder = new google.maps.Geocoder();
+    }
+
+    function getlatlng() {
+        var address = $('#address').val();
+        $('#area_1,#area_2,#area_3').attr('value', '');
+        geocoder.geocode({
+            'address': address
+        }, function (result) {
+            $('#lat').attr('value', result[0].geometry.location.lat());
+            $('#lng').attr('value', result[0].geometry.location.lng());
+
+            $('#formatted_address').attr('value', result[0].formatted_address);
+            for (const component of result[0].address_components) {
+                if (component.types[0] == 'administrative_area_level_1') {
+                    $('#area_1').attr('value', component.long_name);
+                }
+                if (component.types[0] == 'administrative_area_level_2') {
+                    $('#area_2').attr('value', component.long_name);
+                }
+                if (component.types[0] == 'administrative_area_level_3') {
+                    $('#area_3').attr('value', component.long_name);
+                }
+            }
+        })
+    }
+
+    //click 更改 input
+    {
+        $('#equip button').eq(0).click(function() {
+            if ($(this).hasClass('div0-4-1')) {
+                $('#sitter_Licence').attr('value', "無證照")
+            } else {
+                $('#sitter_Licence').attr('value', "有證照")
+            }
+        })
+
+        $('#equip button').eq(1).click(function() {
+            console.log($('#sitter_Cage').val())
+            if ($(this).hasClass('div0-4-1')) {
+                $('#sitter_Cage').attr('value', "需關籠子")
+            } else {
+                $('#sitter_Cage').attr('value', "不關籠子")
+            }
+        })
+
+        $('#equip button').eq(2).click(function() {
+            if ($(this).hasClass('div0-4-1')) {
+                $('#sitter_Monitor').attr('value', "無監視器")
+            } else {
+                $('#sitter_Monitor').attr('value', "有監視器")
+            }
+        })
+
+        $('#catNumber button').click(function() {
+            console.log($('#sitter_CatNumber').val())
+            $('#sitter_CatNumber').attr('value', $(this).text())
+            console.log($('#sitter_CatNumber').val())
+        })
+
+        $('#catMeal button').click(function() {
+            console.log($('#sitter_Meal').val())
+            $('#sitter_Meal').attr('value', $(this).text())
+            console.log($('#sitter_Meal').val())
+        })
+    }
+
+    //複選
+    $('#equip button,#catFeature label').click(function() {
+        $(this).toggleClass('div0-4-1');
+    })
+    //單選
+    $('#catNumber button,#catMeal button').click(function() {
+        $(this).siblings('.div0-4').removeClass('div0-4-1');
+        $(this).addClass('div0-4-1');
+    })
+    
+    
+
+    //儲存
+    $('#save').click(() => {
+        let form = $('#saveSitterForm')[0];
+        let formdata = new FormData(form);
+        $.ajax({
+            url:'/Sitter/SaveSitter',
+            type:'POST',
+            data: formdata,
+            contentType: false,
+            processData: false,
+            success: function() {
+                $.get('/Sitter/SitterViewMode', function(data) {
+                    $('#sitterContent').html(data);
+                })
+            }
+        })
+    })
+
+
+    //取消
+    $('#cancel').click(() => {
+        $.get('/Sitter/SitterViewMode', function(data) {
+            $('#sitterContent').html(data);
+        })
+    })
+}
+    
+
+</script>
+@*切換照片*@
+ <script>
+{
+    let inputList = [] // 放input dom的list
+    let imgList = [] //放img dom的list
+
+    for (var i = 0; i < $(":file").length; i++) {
+        inputList.push($(":file")[i])  //把所有的input dom加進去
+    }
+
+    for (var i = 0; i < $(".dropImg").length; i++) {
+        imgList.push($(".dropImg")[i]) //把所有的img dom加進去
+    }
+
+    let remainNum = 5;
+
+    $(".dropZone-1").on({
+
+        "dragover": function(event) {
+            event.preventDefault();
+        },
+
+
+        "drop": function(event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            let fileList = event.originalEvent.dataTransfer.files;  //把滑鼠抓住的若干檔案assign進去
+
+            for (let i = 0; i < fileList.length; i++) {
+
+                let file = fileList[i];          //把fileList拆分成單獨file跑迴圈
+
+
+                //預覽功能
+                let reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.addEventListener("load", function(event) {
+                    for (let i = 0; i < imgList.length; i++) {
+
+                        //如果該img為空則把該圖片的url assign進去
+                        if (imgList[i].src == '') {
+                            imgList[i].src = event.target.result;
+                            $(`#plus${i + 1}`).css('display', 'none')
+                            $(`#dropZone${i + 1}`).css('border', '2px rgb(115, 244, 222) solid')
+                            remainNum -= 1;
+                            $('#re-p').text(`還剩${remainNum}張可以選擇`)
+                            break;  //跳脫出for迴圈
+                        }
+                    }
+                })
+
+                //檔案上傳
+                for (let i = 0; i < inputList.length; i++) {
+
+                    //如果該input裡的file為空則把file assign進去
+                    if (inputList[i].files.length == 0) {
+
+                        let dt = new DataTransfer();
+                        dt.items.add(file);
+                        inputList[i].files = dt.files;
+                        break;
+                    }
+                }
+            }
+
+        }
+    })
+
+
+    $(function() {
+        $('#theFile1').change(function() {
+            fileChange(1);
+        })
+        $('#theFile2').change(function() {
+            fileChange(2);
+        })
+        $('#theFile3').change(function() {
+            fileChange(3);
+        })
+        $('#theFile4').change(function() {
+            fileChange(4);
+        })
+        $('#theFile5').change(function() {
+            fileChange(5);
+        })
+    })
+
+    function fileChange(num) {
+        let file = $(`#theFile${num}`)[0].files[0]
+        let readFile = new FileReader()
+        readFile.readAsDataURL(file)
+        readFile.addEventListener('load', function() {
+            $(`#dropImg${num}`)[0].src = readFile.result
+        })
+        remainNum -= 1;
+        $('#re-p').text(`還剩${remainNum}張可以選擇`)
+        $(`#plus${num}`).css('display', 'none')
+        $(`#dropZone${num}`).css('border', '2px rgb(115, 244, 222) solid')
+    }
+}
+    </script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5GLU-Md1jCttuMgYGiLngvDh0nELvLjM&callback=initMap&libraries=places,geometry"></script>

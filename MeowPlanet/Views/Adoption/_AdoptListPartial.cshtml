@@ -1,0 +1,267 @@
+﻿@model IEnumerable<MeowPlanet.ViewModels.LikeAdopts>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<link href="~/lib/bootstrap/dist/css/animista.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+@using System.Security.Claims;
+
+@{
+    bool isLogin = Int32.TryParse(User.Claims.Where(x => x.Type == ClaimTypes.Sid).Select(x => x.Value).FirstOrDefault(), out int memberId);
+    string status = "";
+    string date = "";
+}
+<style>
+    
+.btn-outline-secondary {
+    border: 0px solid;
+}
+
+.nav-tabs {
+    border: 0px solid;
+}
+
+div.clue-item {
+    width: 90%;
+    border-radius: 25px;
+    box-shadow: 0 0 3rem rgb(134 171 190 / 30%) inset !important;
+    background-color: rgb(27, 39, 53);
+    margin-top: 3rem !important;
+    margin-left: 40px;
+}
+
+div:first-of-type.clue-item {
+    margin-top: 0.5rem !important;
+}
+
+.clue-item img {
+    height: 155px;
+    width: 180px;
+    object-fit: cover;
+    border-radius: 20px;
+    margin-top: 8px;
+}
+
+.adoptclose {
+   margin-left: 10px;
+   font-size:1.5rem;
+}
+
+#myTabContent {
+    height: 600px;
+    overflow: auto;
+    margin-top: 15px;
+}
+
+.memberright p {
+    font-size: 1.3rem;
+}
+
+.detail {
+    margin-left: 80px;
+    text-align: center;
+}
+
+.nav-tabs .nav-link {
+    border-radius: 20px;
+}
+
+    .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+        font-weight: bold;
+        font-size: 1.5rem;
+        border-radius: 20px;
+        width: 100px;
+    }
+
+.nav-link {
+    color: #fff;
+    width: 100px;
+    font-size: 1.5rem;
+    border-radius: 20px;
+}
+
+    .nav-link:focus, .nav-link:hover {
+        color: #FFF;
+    }
+
+
+</style>
+
+
+<div class="container" style="width:100%;color:antiquewhite" id="adoptlist">
+    <ul class="nav nav-tabs d-flex justify-content-center" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">送養</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">領養</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+
+            @foreach (var item in @ViewBag.owner)
+            {
+                <div class="row clue-item p-3 me-3">
+                    <div class="col-3">
+                        <img src="@Url.Content(@item.CatImg1)">
+                    </div>
+                    <div class="col-5 detail">
+                        <p>@item.CatName</p>
+                        <p>
+                            @item.BreedName
+                        </p>
+                        <button id="@item.MemberId" class="btn btn-outline-secondary messageTo" value="@item.MemberId" style="font-size:1.3rem;color:antiquewhite">申請人:@item.Name  <i class="fa-regular fa-comment-dots"></i></button>
+                        <p>
+                            @if (@item.DateOver == null)
+                            {
+                                date = "申請日期:" + @item.DateStart.ToShortDateString();
+                            }
+                            else
+                            {
+                                date = "結束日期:" + @item.DateOver.ToShortDateString();
+                            }
+                            @date
+                        </p>
+                        <p>
+                            狀態:
+                            @if (@item.Status == 0)
+                            {
+                                status = "等待中";
+                            }
+                            else if (@item.Status == 1)
+                            {
+                                status = "已拒絕";
+                            }
+                            else
+                            {
+                                status = "已同意";
+                            }
+                            @status
+                        </p>
+                    </div>
+
+                    <div class="col-1" style="padding-left:150px;">
+                        @if (@item.Status == 0)
+                        {
+                            <button id="@item.CatId" class="btn btn-outline-secondary no" value="@item.MemberId"><i class="fa-solid fa-xmark adoptclose"></i></button>
+                            <button id="@item.CatId" class="btn btn-outline-secondary yes" value="@item.MemberId" style="margin-left:-1px;"><i class="fa-solid fa-check adoptclose"></i></button>
+                        }
+
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+            <partial name="_OwnerPartial" />
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.1.9/sweetalert2.all.min.js"
+        integrity="sha512-IZ95TbsPTDl3eT5GwqTJH/14xZ2feLEGJRbII6bRKtE/HC6x3N4cHye7yyikadgAsuiddCY2+6gMntpVHL1gHw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+
+    $(".no").click(function() {
+        var catid = $(this).attr("id")
+        var memberid = $(this).val();
+        Swal.fire({
+            title: "確定要拒絕申請嗎？",
+            text: "拒絕申請後不可取消，請慎重考慮！",
+            icon: 'question',
+            showCancelButton: true,
+            heightAuto: false,
+            confirmButtonColor: '#B99668',
+            cancelButtonColor: '#4B5461',
+            confirmButtonText: '拒絕'
+        }).then(function(result) {
+            if (result.value) {
+                Swal.fire({
+                    heightAuto: false,
+                    position: 'center',
+                    title: '你已拒絕領養',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                    .then(function(result) {
+                        $.ajax({
+                            method: 'post',
+                            url: '/Adoption/OwnerNo',
+                            data: { catid: catid, memberid: memberid },
+                            dataType: 'json',
+                            success: function(data) {
+                                $('#adoptlist').empty();
+                                $.get('/Adoption/LikeTolist', function(data) {
+                                    $('#adoptlist').html(data);
+                                })
+
+                            },
+                            error: function() {
+
+                            }
+                        });
+                    }
+                    )
+            }
+        });
+    });
+    @* //刷新狀態
+        $("."+catid).empty();
+        $("#"+catid).empty();
+        $("."+catid).html(data);*@
+        $(".yes").click(function() {
+            var catid = $(this).attr("id")
+            var memberid = $(this).val();
+            Swal.fire({
+                title: "確定要同意申請嗎？",
+                text: "同意申請後不可取消，請慎重考慮！",
+                icon: 'question',
+                showCancelButton: true,
+                heightAuto: false,
+                confirmButtonColor: '#B99668',
+                cancelButtonColor: '#4B5461',
+                confirmButtonText: '同意'
+            }).then(function(result) {
+                if (result.value) {
+                    Swal.fire({
+                        heightAuto: false,
+                        position: 'center',
+                        title: '你已同意領養',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function(result) {
+                        $.ajax({
+                            method: 'post',
+                            url: '/Adoption/OwnerYes',
+                            data: { catid: catid, memberid: memberid },
+                            dataType: 'json',
+                            success: function(data) {
+                                $('#adoptlist').empty();
+                                $.get('/Adoption/LikeTolist', function(data) {
+                                    $('#adoptlist').html(data);
+                                })
+                            },
+                            error: function() {
+
+                            }
+                        });
+                    }
+                    )
+                }
+            });
+        });
+
+
+    $(".messageTo").click(function() {
+        let memberId = $(this).attr("id")
+        let selfId = parseInt('@memberId')
+        messagebox.messageTo(memberId, selfId)
+    })
+
+</script>

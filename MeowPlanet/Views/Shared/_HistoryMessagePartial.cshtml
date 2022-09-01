@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Message>
+@using System.Security.Claims;
+@using System.Globalization;
+@{
+    bool isLogin = Int32.TryParse(User.Claims.Where(x => x.Type == ClaimTypes.Sid).Select(x => x.Value).FirstOrDefault(), out int memberId);
+    DateTime date = new DateTime(2000, 1, 1);
+    bool unreadAdded = false;
+}
+
+<style>
+    .separator {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: firebrick;
+        font-size: 0.8rem;
+    }
+
+        .separator::before,
+        .separator::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid firebrick;
+        }
+
+        .separator:not(:empty)::before {
+            margin-right: .25em;
+        }
+
+        .separator:not(:empty)::after {
+            margin-left: .25em;
+        }
+</style>
+
+
+@foreach (var message in Model)
+{
+    if (unreadAdded == false && message.IsRead == false && message.ReceivedId == memberId)
+    {
+        <div class="separator">新訊息</div>
+        unreadAdded = true;
+    }
+
+    if (DateTime.Compare(date.Date, message.Time.Date) < 0)
+    {
+        <div class="m-auto rounded-pill bg-secondary text-center my-2" style="width: 70px; color: white; font-size: 0.8rem">@message.Time.ToString("M", new CultureInfo("zh-tw"))</div>
+
+        date = message.Time;
+    }
+
+    if (message.ReceivedId == memberId)
+    {
+
+        <div class="message-left">
+            <img class="me-2" src='@message.Send.Photo' />
+            <div class="d-flex flex-column align-items-start">
+                <div class="text-end mb-2">@message.Send.Name <span class="time">@message.Time.ToString("tth:mm", new CultureInfo("zh-tw"))</span></div>
+                <div class="message" style="border-top-left-radius: 0;">
+                    @if (message.MessageContent.Contains("/images/message/"))
+                    {
+                        <img src="@message.MessageContent" style="max-width: 220px; max-height: 250px;object-fit: cover" />
+                    }
+                    else
+                    {
+                        @message.MessageContent
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="message-right">
+            <img class="ms-2" src='@message.Send.Photo' />
+            <div class="d-flex flex-column align-items-end">
+                <div class="text-end mb-2"><span class="time">@message.Time.ToString("tth:mm", new CultureInfo("zh-tw"))</span> @message.Send.Name</div>
+                <div class="message" style="border-top-right-radius: 0;">
+                    @if (message.MessageContent.Contains("/images/message/"))
+                    {
+                        <img src="@message.MessageContent" style="max-width: 220px; max-height: 250px;object-fit: cover" />
+                    }
+                    else
+                    {
+                        @message.MessageContent
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@if (DateTime.Compare(date.Date, DateTime.Now.Date) < 0)
+{
+    <div class="m-auto rounded-pill bg-secondary text-center my-2" style="width: 70px; color: white; font-size: 0.8rem">@DateTime.Now.ToString("M", new CultureInfo("zh-tw"))</div>
+}
+
+<script>
+    $('.message img').one('load', () => {
+
+        if ($('#message-content').find('.separator').length == 0) {
+            messagebox.autoScroll();
+
+        }
+
+    })
+</script>

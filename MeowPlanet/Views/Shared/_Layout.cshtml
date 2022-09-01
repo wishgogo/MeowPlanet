@@ -1,0 +1,91 @@
+﻿@addTagHelper *, MeowPlanet
+@using System.Security.Claims;
+@{
+    bool isLogin = Int32.TryParse(User.Claims.Where(x => x.Type == ClaimTypes.Sid).Select(x => x.Value).FirstOrDefault(), out int memberId);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - 喵屋星球</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" />
+    @RenderSection("Styles", required: false)
+</head>
+<body class="d-flex flex-column">
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark2">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" id="logo">
+                    <img class="img-p" src="@Href("~/Images/LOGO.png")" alt="">
+                    <img class="img-t" src="@Href("~/Images/LOGO文字.png")" alt="">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent" style="height:60px;">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Sitter" asp-action="Index" >
+                                貓咪保姆
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Adoption" asp-action="Index">
+                                貓咪想家
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Missings" asp-action="Index">
+                                協尋貓咪
+                            </a>
+                        </li>
+
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                        <partial name="_LoginPartial" />
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    @RenderBody()
+    <vc:private-message member-id="memberId"></vc:private-message>
+    <footer class="footer text-muted">
+        <div class="container">
+            &copy; 第四組 - MeowPlanet -
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/slick.js"></script>
+    <script>
+        $('#message-box').on('show.bs.collapse', (e) => {
+            if ('@isLogin' == 'False') {
+
+                Swal.fire({
+                    heightAuto: false,
+                    position: 'center',
+                    title: '請先登入會員',
+                    icon: 'warning',
+                    showConfirmButton: false,
+                    timer: 2500
+                })
+
+                e.preventDefault();
+            }
+        })
+
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

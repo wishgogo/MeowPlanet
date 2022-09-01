@@ -1,0 +1,117 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+@section Styles{
+    <link href="~/css/loginpage.css" rel="stylesheet" />
+}
+
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
+
+    <section class="loginsection">
+        <div class="container-fluid">
+            <div class="row h-100">
+                <div class="col-6 p-0">
+                    <img src="@Href("~/Images/planet.jpg")">
+                </div>
+                <div class="col-6 p-5 loginform">
+                    <form id="account" method="post">
+                        <div class="text-center">
+                            <h2>登入喵星球</h2>
+                        </div>
+                        <div class="text-center">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        </div>
+                        
+                        <p class="form-p">Email</p>
+                        <div class="d-flex justify-content-center">
+                            <input asp-for="Input.Email" class="form-control login-sp" autocomplete="username" aria-required="true" />
+                        </div>
+
+                        <div class="text-center">
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+
+                        <p class="form-p">密碼</p>
+                        <div class="d-flex justify-content-center">
+                            <input asp-for="Input.Password" class="form-control login-sp" autocomplete="current-password" aria-required="true" />
+                        </div>
+
+                        <div class="text-center">
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check form-switch cbox">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                            <label class="form-check-label" for="flexSwitchCheckChecked">記住我</label>
+                            <a id="forgot-password" asp-page="./ForgotPassword">忘記密碼?</a>
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <button id="login-submit" type="submit" class="login-sp">登入</button>
+                            @*<button class="login-sp">登入</button>*@
+                        </div>
+
+                        <p class="or-p text-center">——————————&ensp;&ensp;&ensp;或者&ensp;&ensp;&ensp;——————————</p>
+
+                        <div class="d-flex justify-content-center link-icon">
+                            <img src="@Href("~/Images/googleplus.png")">
+                        </div>
+
+                        <div class="text-center re-a">
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">還不是會員?</a>
+                        </div>
+
+                    </form>
+
+                    @*                    <form id="account" method="post">
+                <h2>登入喵星球</h2>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <label>Email</label>
+                <div class="form-floating">
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+                <label asp-for="Input.Email" class="form-label"></label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <label>密碼</label>
+                <div class="form-floating">
+                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
+                <label asp-for="Input.Password" class="form-label"></label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div>
+                <div class="checkbox">
+                <label asp-for="Input.RememberMe" class="form-label">
+                <input class="form-check-input" asp-for="Input.RememberMe" />
+                @Html.DisplayNameFor(m => m.Input.RememberMe)
+                </label>
+                </div>
+                </div>
+                <div>
+                <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+                </div>
+                <div>
+                <p>
+                <a id="forgot-password" asp-page="./ForgotPassword">忘記密碼</a>
+                </p>
+                <p>
+                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">註冊帳號</a>
+                </p>
+                </div>
+                </form>*@
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+    @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

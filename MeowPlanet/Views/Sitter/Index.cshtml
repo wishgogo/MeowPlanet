@@ -1,0 +1,49 @@
+﻿@using MeowPlanet.ViewModels.Sitters;
+@model IEnumerable<SitterViewModels>;
+@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css" />
+    <link href="~/css/sitter-index.css" rel="stylesheet" />
+}
+@{
+    ViewData["Title"] = "貓咪保姆";
+}
+<div class="input-box">
+        <input class="buzz" type="text" id="mapInput" placeholder="想在哪裡找保姆呢...">
+    </div>
+<div style="position:relative;overflow:hidden;">
+    <!-- 地圖顯示區 -->
+    <div class="show-map_div2-1" id="btn01">
+        <img id="btn01" src="@Href("~/images/sitter/顯示地圖.png")">
+    </div>
+    <div class="map_div2-2" id="map_div01">
+        <div id="map"></div>
+        <div class="close-map_div2-2-1" id="btn02">
+            <i class="fa-solid fa-angles-left fa-lg"></i>
+        </div>
+    </div>
+    <!-- 背景 -->
+    <div class="starsky">
+        <div id="stars"></div>
+        <div id="stars2"></div>
+        <div id="stars3"></div>
+
+        <!-- 保姆展示細項 -->
+        <div class="container" id="search-result_div03">
+            <div class="row">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        var model = @Html.Raw(Json.Serialize(Model));
+        $('.nav-item a').eq(0).addClass('nav-item-active');
+    </script>
+    <script src="~/js/sitter-index.js" type="module"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5GLU-Md1jCttuMgYGiLngvDh0nELvLjM&callback=initMap&libraries=places,geometry"></script>
+    }

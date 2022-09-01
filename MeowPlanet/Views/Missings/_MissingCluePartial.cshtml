@@ -1,0 +1,106 @@
+﻿@addTagHelper *, MeowPlanet
+@using System.Security.Claims;
+@{
+    int memberId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);
+
+}
+
+<style>
+    .btn-tab {
+        border: 2px solid black;
+        width: 15%;
+        font-size: 1.1rem;
+        color: black;
+        background-color: white;
+        padding: 0.4rem;
+    }
+
+        .btn-tab:hover, .btn-tab-active {
+            border-color: white;
+            color: white;
+            background-color: #212529;
+        }
+
+    .btn-found {
+        border: 2px solid black;
+        font-size: 1.1rem;
+        color: black;
+        background-color: #ffd43b;
+        padding: 0.4rem 1.4rem 0.4rem 1.4rem;
+        position: absolute;
+        right: 0;
+    }
+
+        .btn-found:hover {
+            background-color: #fab005;
+        }
+</style>
+
+<div class="px-5 pt-2 pb-4 h-100 w-100">
+    <div class="position-relative">
+        <button class="rounded-pill mx-3 btn-tab btn-tab-active"><i class="fa-solid fa-circle-question me-2"></i>待審核</button>
+        <button class="rounded-pill mx-3 btn-tab"><i class="fa-solid fa-circle-check me-2"></i>已釘選</button>
+        <button class="rounded-pill mx-3 btn-tab"><i class="fa-solid fa-trash-can me-2"></i>已移除</button>
+        <button class="rounded-pill btn-found"><i class="fa-solid fa-paw me-2"></i>已尋回</button>
+    </div>
+    <div id="clue-list" style="height: 92.5%; overflow: auto; margin-top: 1rem">
+        <vc:missings-manage member-id="@memberId" status="0"></vc:missings-manage>
+    </div>
+</div>
+
+
+
+<script>
+    var memberId = '@memberId'
+
+    $('.btn-tab').click(function() {
+        $('.btn-tab').removeClass('btn-tab-active');
+        $(this).addClass('btn-tab-active');
+    })
+
+    $('.btn-tab').eq(0).click(() => {
+        $('#clue-list').load("/Missings/GetCluesComponent", { memberId, status: 0 })
+    })
+    $('.btn-tab').eq(1).click(() => {
+        $('#clue-list').load("/Missings/GetCluesComponent", { memberId, status: 1 })
+    })
+    $('.btn-tab').eq(2).click(() => {
+        $('#clue-list').load("/Missings/GetCluesComponent", { memberId, status: 2 })
+    })
+
+    $('.btn-found').click(() => {
+
+        Swal.fire({
+            title: '確定已尋回您的愛貓 @ViewBag.CatName ?',
+            text: '注意：此動作將無法回復',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '確定',
+            cancelButtonText: '取消',
+            heightAuto: false,
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+
+                $.post('/Missings/CatFound', (data) => {
+                    if (data == "OK") {
+                        Swal.fire({
+                            heightAuto: false,
+                            position: 'center',
+                            icon: 'success',
+                            title: '恭喜您尋回愛貓',
+                            showConfirmButton: false,
+                            timer: 2500
+                        }).then(() => {
+                            window.location.href = "/Member/Index"
+                        })
+                    }
+                })
+            }
+            else {
+                return;
+            }
+        })
+    })
+
+</script>

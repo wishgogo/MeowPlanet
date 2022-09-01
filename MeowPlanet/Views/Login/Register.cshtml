@@ -1,0 +1,189 @@
+﻿@model MeowPlanet.ViewModels.RegisterModel
+
+@{
+    ViewData["Title"] = "註冊";
+}
+
+@section Styles{
+    <link href="~/css/registerpage.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+}
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
+    <section class="registersection img-bg d-flex align-items-center">
+
+        <div class="container">
+            <div class="row d-flex justify-content-center w-75" style="background-color: #171b20; background-image: radial-gradient(rgb(27, 39, 53) 0%, rgb(0, 0, 0) 100%); animation: FadeInUp 1s ease; position:relative ; z-index:999;">
+                <div class="col-6 mycontent-left d-flex align-items-center justify-content-center">
+                    <p>
+                        填寫簡單資料<br />
+                        一起登錄喵屋星
+                    </p>
+                </div>
+
+                <div class="col-6 mycontent-right d-flex align-items-center justify-content-center">
+
+                    <form method="post" asp-action="AddMember" asp-controller="Login" autocomplete="on">
+                        <div class="regist-form">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="form-p">Email</p>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <input type="email" asp-for="Email" class="form-control regist-sp" value="meowplanet004@gmail.com" aria-required="true" id="email" />
+
+                            </div>
+
+                            <div class="d-flex justify-content-start align-items-center err-msg-div">
+                                <span asp-validation-for="Email" class="text-danger" id="EmailValid"></span>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="form-p">密碼</p>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <input type="password" asp-for="Password" class="form-control regist-sp" value="123456" aria-required="true" id="password" />
+                            </div>
+
+                            <div class="d-flex justify-content-start align-items-center err-msg-div">
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="form-p">姓名</p>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <input type="text" asp-for="Name" class="form-control regist-sp" value="meow" aria-required="true" id="name" />
+                            </div>
+
+                            <div class="d-flex justify-content-start align-items-center err-msg-div">
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="form-p">手機號碼</p>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <input type="text" asp-for="Phone" class="form-control regist-sp" value="0911222333" aria-required="true" id="phone" />
+
+                            </div>
+
+                            <div class="d-flex justify-content-start align-items-center err-msg-div">
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="form-p">驗證碼</p>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <input type="text" class="form-control regist-send" autocomplete="current-password" aria-required="true" id="verify" maxlength="5" />
+                                <button type="button" class="btn btn-light btn-send" id="sendEmail">寄送驗證碼</button>
+                            </div>
+
+                            <div class="d-flex justify-content-start align-items-center err-msg-div">
+                                <span class="text-danger" id="verifyspan"></span>
+                            </div>
+
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-light regist-sp2" id="registerSubmit">註冊</button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        (() => {
+            // 檢查email是否重複
+            $('input[type=email]').blur(function() {
+                $.get("EmailCheck", { email: this.value }, function(data) {
+                    if (data == "此信箱已註冊") {
+                        $('#EmailValid').html(data)
+                    } else {
+                    }
+                })
+            })
+
+            // 寄送驗證碼
+            let verifycode;
+            $('#sendEmail').click(function() {
+                let form = $(this).parents('form');
+                if (form.valid()) {
+                    $.get("/Login/EmailCheck", { email: $('input[type=email]').val() }, function(data) {
+                        if (data == "此信箱可使用") {
+                            let email = $('input[type=email]').val();
+                            $('#verifyspan').text("驗證碼已寄出").removeClass('text-danger').css('color', 'white');
+                            $.get("/Login/SendRegistMail", { email }, function(data) {
+                                verifycode = data;
+                            })
+                        }
+                    })
+                }
+            })
+
+            // 輸入完顯示驗證碼是否正確
+            $('#verify').keyup(function() {
+                $('#verifyspan').text("")
+                if ($('#verify').val().length == 5) {
+                    if (verifycode != $('#verify').val()) {
+                        $('#verifyspan').text("驗證碼錯誤").addClass('text-danger');
+                    }
+                }
+            })
+
+            $('#registerSubmit').click(function(e) {
+                e.preventDefault();
+
+                let form = $(this).parents('form');
+
+                // 註冊前判定驗證碼是否正確
+                if ($('#verify').val() != "") {
+                    if (verifycode != $('#verify').val()) {
+                        $('#verifyspan').text("驗證碼錯誤").addClass('text-danger');
+                        form.valid();
+                        return;
+                    }
+
+                } else {
+                    $('#verifyspan').text("請輸入驗證碼").addClass('text-danger');
+                    form.valid();
+                    return;
+                }
+                //form.valid先驗證再ajax
+                if (form.valid()) {
+                    $.get("EmailCheck", { email: $('input[type=email]').val() }, function(data) {
+                        if (data == "此信箱可使用") {
+                            Swal.fire({
+                                heightAuto: false,
+                                position: 'center',
+                                icon: 'success',
+                                title: '註冊成功',
+                                showConfirmButton: false,
+                                timer: 2500
+                            }).then(function() {
+                                form.submit();
+                            })
+                        } else {
+                            form.submit();
+                        }
+                    })
+                }
+            })
+        })()
+    </script>
+
+    }

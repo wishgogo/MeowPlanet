@@ -1,0 +1,358 @@
+﻿* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.img-logo {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+
+.container-fluid {
+    height: 100vh;
+}
+
+.row {
+    height: 100%;
+}
+
+.left-reg {
+    background-image: linear-gradient(to top left, #327382, #171b20);
+}
+
+.right-reg {
+    background-color: #171b20;
+}
+
+.div-left-p {
+    font-size: 60px;
+    color: white;
+}
+
+.div-right-form {
+    font-size: 60px;
+    color: white;
+}
+
+.c-btn {
+    color: white;
+    font-size: 30px;
+    padding: 1rem;
+    border: 2px rgb(115, 244, 222) solid;
+    border-radius: 20px;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    height: 70px;
+    width: 200px;
+    position: absolute;
+    bottom: 20%;
+    left: 75%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.div-right-form .r-btn {
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#p1 {
+    display: block;
+}
+
+#p2 {
+    display: none;
+}
+
+#p3 {
+    display: none;
+}
+
+#p4 {
+    display: none;
+}
+
+#p5 {
+    display: none;
+}
+
+#p6 {
+    display: none;
+}
+
+#p7 {
+    display: none;
+}
+
+#f1 {
+    display: block;
+}
+
+#f2 {
+    display: none;
+}
+
+#f3 {
+    width:500px;
+    display: none;
+}
+
+#f4 {
+    width: 500px;
+    display: none;
+}
+
+#f5 {
+    
+    display: none;
+}
+
+#f6 {
+    width: 500px;
+    display: none;
+}
+
+
+.st-b {
+    color: white;
+    margin: 50px;
+    font-size: 30px;
+    border-radius: 50px;
+    height: 100px;
+    width: 500px;
+    padding: 1rem;
+    border: 2px rgb(115, 244, 222) solid;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+}
+
+.re-b {
+    color: #171b20;
+    font-size: 30px;
+    border-radius: 20px;
+    height: 70px;
+    width: 200px;
+    padding: 1rem;
+    border: 2px rgb(115, 244, 222) solid;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    background-color: #73F4DE;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 2%;
+    left: 52%;
+}
+
+.ct-b {
+    color: white;
+    font-size: 30px;
+    border-radius: 20px;
+    height: 70px;
+    width: 200px;
+    padding: 1rem;
+    border: 2px rgb(115, 244, 222) solid;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 2%;
+    right: 2%;
+}
+
+.ct-b2 {
+    color: white;
+    font-size: 30px;
+    border-radius: 20px;
+    height: 70px;
+    width: 200px;
+    padding: 1rem;
+    border: 2px rgb(115, 244, 222) solid;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 2%;
+    right: 25%;
+    transform: translate(50%);
+}
+
+.con-b {
+    color: white;
+    font-size: 25px;
+    border-radius: 40px;
+    height: 80px;
+    width: 100%;
+    margin-bottom:50px;
+    padding: 1rem;
+    border: 2px rgb(115, 244, 222) solid;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.con2-b {
+    color: white;
+    font-size: 25px;
+    border-radius: 40px;
+    height: 80px;
+    width: 200px;
+    padding: 1rem;
+    border: 2px rgb(115, 244, 222) solid;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.con3-b {
+    color: white;
+    font-size: 25px;
+    border-radius: 40px;
+    height: 80px;
+    width: 200px;
+    padding: 1rem;
+    border: 2px rgb(115, 244, 222) solid;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.con4-b {
+    color: white;
+    font-size: 25px;
+    border-radius: 40px;
+    height: 80px;
+    width: 200px;
+    margin-bottom: 50px;
+    padding: 1rem;
+    border: 2px rgb(115, 244, 222) solid;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#f2 input {
+    color: white;
+    font-size: 30px;
+    height: 100%;
+    padding: 1rem;
+    border: 2px rgb(115, 244, 222) solid;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 40px;
+    width: 500px;
+    text-align: left;
+}
+
+#f3 input {
+    color: white;
+    font-size: 30px;
+    height: 100%;
+    padding: 1rem;
+    border: 2px rgb(115, 244, 222) solid;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 40px;
+    text-align: left;
+}
+
+#f2 p {
+    margin-bottom: 10px;
+    font-size: 30px;
+}
+
+#f2 textarea {
+    color: white;
+    font-size: 30px;
+    padding: 1rem;
+    border: 2px rgb(115, 244, 222) solid;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 40px;
+}
+
+#f3 p {
+    font-size: 30px;
+}
+
+#f4 p {
+    font-size: 30px;
+}
+
+.dropZone {
+    padding: 1rem;
+    border: 2px rgb(115, 244, 222) dashed;
+    box-shadow: 0 0 3rem rgba(134, 171, 190, 0.5) inset;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 40px;
+    width: 300px;
+    height: 200px;
+    margin: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .dropZone:hover {
+        background: rgba(0, 0, 0, .7);
+    }
+
+.dropImg {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#f5 {
+    padding-bottom: 10%;
+}
+
+.hint-d {
+    width: 340px;
+}
+
+.div-right-form .hint-d p {
+    font-size: 30px;
+    margin: 0px;
+}
+
+.in-sp {
+    position: absolute;
+    bottom: 1%;
+    right: 25%;
+    transform: translateX(50%);
+    color: #2A483A;
+}
+
+.b-press {
+    color: black;
+    background-color: white;
+}

@@ -1,0 +1,206 @@
+﻿let start = window.innerHeight * 1;
+let mid = window.innerHeight * 1.4;
+let mid_1 = window.innerHeight * 1.6;
+let end = window.innerHeight * 2;
+let mid2 = window.innerHeight * 2.4;
+let mid2_2 = window.innerHeight * 2.6;
+let end2 = window.innerHeight * 3;
+let mid3 = window.innerHeight * 3.4;
+let mid3_2 = window.innerHeight * 3.6;
+let end3 = window.innerHeight * 4;
+$(document).on('scroll', function () {
+    let now = $(document).scrollTop(); 
+    if (now <= start) {
+        $('#img4').css('opacity', '1').css('--lef', '7%').css('--top', '33%').css('--wid', '24%').css('height', '34%')
+        $('#img5').css('opacity', '1').css('--lef', '38%').css('--top', '33%').css('--wid', '24%').css('height', '34%')
+        $('#img6').css('opacity', '1').css('--lef', '69%').css('--top', '33%').css('--wid', '24%').css('height', '34%')
+        $('.p1').css('font-size', '50px')
+        $('.p2').css('font-size', '50px')
+        $('.p3').css('font-size', '50px')
+        $('.intro-p1').css('opacity', '0')
+        $('.intro-p2').css('opacity', '0')
+        $('.intro-p3').css('opacity', '0')
+        $('.intro-p4').css('opacity', '0')
+        $('.intro-p5').css('opacity', '0')
+        $('.intro-p6').css('opacity', '0')
+        $('.intro-p7').css('opacity', '0')
+        $('.intro-p8').css('opacity', '0')
+        $('.intro-p9').css('opacity', '0')
+
+        $('#sitterLink').css('pointer-events', 'auto')
+        $('#adoptionLink').css('pointer-events', 'auto')
+        $('#missingsLink').css('pointer-events', 'auto')
+
+    } else if ((now > start) && (now < mid)) {
+        $('#img4')
+            .css('opacity', '1')
+            .css('--lef', `${7 + (23 * (now - start) / (mid - start))}%`)
+            .css('--top', `${33 - (13 * (now - start) / (mid - start))}%`)
+            .css('--wid', `${24 + (16 * (now - start) / (mid - start))}%`)
+            .css('height', `${34 + (16 * (now - start) / (mid - start))}%`)
+        $('#img5').css('opacity', `${1 - (now + 100 - start) / (mid - start)}`).css('--lef', '38%').css('--top', '33%').css('--wid', '24%').css('height', '34%')
+        $('#img6').css('opacity', `${1 - (now + 100 - start) / (mid - start)}`).css('--lef', '69%').css('--top', '33%').css('--wid', '24%').css('height', '34%')
+        $('.p1').css('font-size', `${50 + (20 * (now - start) / (mid - start))}px`)
+        $('.intro-p1').css('opacity', `${(now - start) / (mid - start)}`)
+        $('.intro-p2').css('opacity', `${(now - start) / (mid - start)}`)
+        $('.intro-p3').css('opacity', `${(now - start) / (mid - start)}`)
+        $('.intro-p4').css('opacity', '0')
+        $('.intro-p5').css('opacity', '0')
+        $('.intro-p6').css('opacity', '0')
+        $('.intro-p7').css('opacity', '0')
+        $('.intro-p8').css('opacity', '0')
+        $('.intro-p9').css('opacity', '0')
+
+        $('#sitterLink').css('pointer-events', 'auto')
+        $('#adoptionLink').css('pointer-events', 'none')
+        $('#missingsLink').css('pointer-events', 'none')
+
+    } else if ((now > mid) && (now < mid_1)) {
+        $('#img5').css('opacity', '0')
+        $('#img6').css('opacity', '0')
+    } else if ((now > mid_1) && (now < end)) {
+        $('#img4')
+            .css('opacity','1')
+            .css('--lef', `${30 - (23 * (now - mid_1) / (end - mid_1))}%`)
+            .css('--top', `${20 + (13 * (now - mid_1) / (end - mid_1))}%`)
+            .css('--wid', `${40 - (16 * (now - mid_1) / (end - mid_1))}%`)
+            .css('height', `${50 - (16 * (now - mid_1) / (end - mid_1))}%`)
+        $('#img5').css('opacity', `${(now -100 - mid_1) / (end - mid_1)}`).css('--lef', '38%').css('--top', '33%').css('--wid', '24%').css('height', '34%')
+        $('#img6').css('opacity', `${(now - 100 - mid_1) / (end - mid_1)}`).css('--lef', '69%').css('--top', '33%').css('--wid', '24%').css('height', '34%')
+        $('.p1').css('font-size', `${70 - (20 * (now - mid_1) / (end - mid_1))}px`)
+        $('.intro-p1').css('opacity', `${1 - (now - mid_1) / (end - mid_1)}`)
+        $('.intro-p2').css('opacity', `${1 - (now - mid_1) / (end - mid_1)}`)
+        $('.intro-p3').css('opacity', `${1 - (now - mid_1) / (end - mid_1)}`)
+        $('.intro-p4').css('opacity', '0')
+        $('.intro-p5').css('opacity', '0')
+        $('.intro-p6').css('opacity', '0')
+        $('.intro-p7').css('opacity', '0')
+        $('.intro-p8').css('opacity', '0')
+        $('.intro-p9').css('opacity', '0')
+
+        $('#sitterLink').css('pointer-events', 'auto')
+        $('#adoptionLink').css('pointer-events', 'none')
+        $('#missingsLink').css('pointer-events', 'none')
+
+    } else if ((now > end) && (now < mid2)) {
+        $('#img5')
+            .css('opacity', '1')
+            .css('--lef', `${38 - (8 * (now - end) / (mid2 - end))}%`)
+            .css('--top', `${33 - (13 * (now - end) / (mid2 - end))}%`)
+            .css('--wid', `${24 + (16 * (now - end) / (mid2 - end))}%`)
+            .css('height', `${34 + (16 * (now - end) / (mid2 - end))}%`)
+        $('#img4').css('opacity', `${1 - (now +100 - end) / (mid2 - end)}`).css('--lef', '7%').css('--top', '33%').css('--wid', '24%').css('height', '34%')
+        $('#img6').css('opacity', `${1 - (now + 100 - end) / (mid2 - end)}`).css('--lef', '69%').css('--top', '33%').css('--wid', '24%').css('height', '34%')
+        $('.p2').css('font-size', `${50 + (20 * (now - end) / (mid2 - end))}px`)
+        $('.intro-p1').css('opacity', '0')
+        $('.intro-p2').css('opacity', '0')
+        $('.intro-p3').css('opacity', '0')
+        $('.intro-p4').css('opacity', `${(now - end) / (mid2 - end)}`)
+        $('.intro-p5').css('opacity', `${(now - end) / (mid2 - end)}`)
+        $('.intro-p6').css('opacity', `${(now - end) / (mid2 - end)}`)
+        $('.intro-p7').css('opacity', '0')
+        $('.intro-p8').css('opacity', '0')
+        $('.intro-p9').css('opacity', '0')
+
+        $('#sitterLink').css('pointer-events', 'none')
+        $('#adoptionLink').css('pointer-events', 'auto')
+        $('#missingsLink').css('pointer-events', 'none')
+
+    } else if ((now > mid2) && (now < mid2_2)) {
+        $('#img4').css('opacity', '0')
+        $('#img6').css('opacity', '0')
+    } else if ((now > mid2_2) && (now < end2)) {
+        $('#img5')
+            .css('opacity', '1')
+            .css('--lef', `${30 + (8 * (now - mid2_2) / (end2 - mid2_2))}%`)
+            .css('--top', `${20 + (13 * (now - mid2_2) / (end2 - mid2_2))}%`)
+            .css('--wid', `${40 - (16 * (now - mid2_2) / (end2 - mid2_2))}%`)
+            .css('height', `${50 - (16 * (now - mid2_2) / (end2 - mid2_2))}%`)
+        $('#img4').css('opacity', `${(now -100 - mid2_2) / (end2 - mid2_2)}`).css('--lef', '7%').css('--top', '33%').css('--wid', '24%').css('height', '34%')
+        $('#img6').css('opacity', `${(now -100 - mid2_2) / (end2 - mid2_2)}`).css('--lef', '69%').css('--top', '33%').css('--wid', '24%').css('height', '34%')
+        $('.p2').css('font-size', `${70 - (20 * (now - mid2_2) / (end2 - mid2_2))}px`)
+        $('.intro-p1').css('opacity', '0')
+        $('.intro-p2').css('opacity', '0')
+        $('.intro-p3').css('opacity', '0')
+        $('.intro-p4').css('opacity', `${1 - (now - mid2_2) / (end2 - mid2_2)}`)
+        $('.intro-p5').css('opacity', `${1 - (now - mid2_2) / (end2 - mid2_2)}`)
+        $('.intro-p6').css('opacity', `${1 - (now - mid2_2) / (end2 - mid2_2)}`)
+        $('.intro-p7').css('opacity', '0')
+        $('.intro-p8').css('opacity', '0')
+        $('.intro-p9').css('opacity', '0')
+
+        $('#sitterLink').css('pointer-events', 'none')
+        $('#adoptionLink').css('pointer-events', 'auto')
+        $('#missingsLink').css('pointer-events', 'none')
+
+    } else if ((now > end2) && (now < mid3)) {
+        $('#img6')
+            .css('opacity', '1')
+            .css('--lef', `${69 - (39 * (now - end2) / (mid3 - end2))}%`)
+            .css('--top', `${33 - (13 * (now - end2) / (mid3 - end2))}%`)
+            .css('--wid', `${24 + (16 * (now - end2) / (mid3 - end2))}%`)
+            .css('height', `${34 + (16 * (now - end2) / (mid3 - end2))}%`)
+        $('#img4').css('opacity', `${1 - (now +100 - end2) / (mid3 - end2)}`).css('--lef', '7%').css('--top', '33%').css('--wid', '24%').css('height', '34%')
+        $('#img5').css('opacity', `${1 - (now + 100 - end2) / (mid3 - end2)}`).css('--lef', '38%').css('--top', '33%').css('--wid', '24%').css('height', '34%')
+        $('.p3').css('font-size', `${50 + (20 * (now - end2) / (mid3 - end2))}px`)
+        $('.intro-p1').css('opacity', '0')
+        $('.intro-p2').css('opacity', '0')
+        $('.intro-p3').css('opacity', '0')
+        $('.intro-p4').css('opacity', '0')
+        $('.intro-p5').css('opacity', '0')
+        $('.intro-p6').css('opacity', '0')
+        $('.intro-p7').css('opacity', `${(now - end2) / (mid3 - end2)}`)
+        $('.intro-p8').css('opacity', `${(now - end2) / (mid3 - end2)}`)
+        $('.intro-p9').css('opacity', `${(now - end2) / (mid3 - end2)}`)
+
+        $('#sitterLink').css('pointer-events', 'none')
+        $('#adoptionLink').css('pointer-events', 'none')
+        $('#missingsLink').css('pointer-events', 'auto')
+
+    } else if ((now > mid3) && (now < mid3_2)) {
+        $('#img4').css('opacity', '0')
+        $('#img5').css('opacity', '0')
+    } else if ((now > mid3_2) && (now < end3)) {
+        $('#img6').css('visibility', 'visible')
+            .css('opacity', '1')
+            .css('--lef', `${30 + (39 * (now - mid3_2) / (end3 - mid3_2))}%`)
+            .css('--top', `${20 + (13 * (now - mid3_2) / (end3 - mid3_2))}%`)
+            .css('--wid', `${40 - (16 * (now - mid3_2) / (end3 - mid3_2))}%`)
+            .css('height', `${50 - (16 * (now - mid3_2) / (end3 - mid3_2))}%`)
+        $('#img4').css('opacity', `${(now -100 - mid3_2) / (end3 - mid3_2)}`).css('--lef', '7%').css('--top', '33%').css('--wid', '24%').css('height', '34%')
+        $('#img5').css('opacity', `${(now -100 - mid3_2) / (end3 - mid3_2)}`).css('--lef', '38%').css('--top', '33%').css('--wid', '24%').css('height', '34%')
+        $('.p3').css('font-size', `${70 - (20 * (now - mid3_2) / (end3 - mid3_2))}px`)
+        $('.intro-p7').css('opacity', `${1 - (now - mid3_2) / (end3 - mid3_2)}`)
+        $('.intro-p8').css('opacity', `${1 - (now - mid3_2) / (end3 - mid3_2)}`)
+        $('.intro-p9').css('opacity', `${1 - (now - mid3_2) / (end3 - mid3_2)}`)
+
+        $('#sitterLink').css('pointer-events', 'none')
+        $('#adoptionLink').css('pointer-events', 'none')
+        $('#missingsLink').css('pointer-events', 'auto')
+
+    } else if (now > end3) {
+        $('#img4').css('--lef', '7%').css('--top', '33%').css('--wid', '24%').css('height', '34%')
+        $('#img5').css('--lef', '38%').css('--top', '33%').css('--wid', '24%').css('height', '34%')
+        $('#img6').css('--lef', '69%').css('--top', '33%').css('--wid', '24%').css('height', '34%')
+        $('#img4').css('opacity', '1')
+        $('#img5').css('opacity', '1')
+        $('#img6').css('opacity', '1')
+        $('.p1').css('font-size', '50px')
+        $('.p2').css('font-size', '50px')
+        $('.p3').css('font-size', '50px')
+        $('.intro-p1').css('opacity', '0')
+        $('.intro-p2').css('opacity', '0')
+        $('.intro-p3').css('opacity', '0')
+        $('.intro-p4').css('opacity', '0')
+        $('.intro-p5').css('opacity', '0')
+        $('.intro-p6').css('opacity', '0')
+        $('.intro-p7').css('opacity', '0')
+        $('.intro-p8').css('opacity', '0')
+        $('.intro-p9').css('opacity', '0')
+
+        $('#sitterLink').css('pointer-events', 'auto')
+        $('#adoptionLink').css('pointer-events', 'auto')
+        $('#missingsLink').css('pointer-events', 'auto')
+    }
+
+})
